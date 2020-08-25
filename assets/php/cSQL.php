@@ -1,14 +1,11 @@
 <?php
-//classe de connexion à une base de donnée SQL à destination des étudiants du CESI
-namespace App\Controller\classes;
-use \PDO;
 
 class cSQL{
     public $oBdd;
     public $oReq;
     public $aData;
     function __construct(string $host = "", string $database = "", string $user = "", string $password = ""){
-        if ($host=="" && $database=="" && $user=="" && $password=="") $this->connect('localhost', 'CV', 'root', '');
+        if ($host=="" && $database=="" && $user=="" && $password=="") $this->connect('localhost', 'projet_web', 'root', '');
         else $this->connect($host, $database, $user, $password);
     }
     function connect(string $host, string $database, string $user, string $password){

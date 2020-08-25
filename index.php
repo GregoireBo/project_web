@@ -1,3 +1,8 @@
+<?php
+    include_once('assets/php/_includes.php')
+?>
+
+
 <!doctype html>
 <html lang="fr">
 <head>
