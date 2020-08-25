@@ -1,0 +1,42 @@
+
+  .card-signin .card-title {
+    margin-bottom: 2rem;
+    font-weight: 300;
+    font-size: 1.5rem;
+  }
+  
+  .card-signin .card-img-left {
+    width: 45%;
+    background-size: cover;
+  }
+  
+  .card-signin .card-body {
+    padding: 2rem;
+  }
+
+  .form-signin .btn {
+    cursor: pointer;
+    font-size: 80%;
+    border-radius: 5rem;
+    letter-spacing: .1rem;
+    font-weight: bold;
+    padding: 1rem;
+    transition: all 0.2s;
+  }
+  
+  .form-label-group {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+  
+  .form-label-group input {
+    height: auto;
+    border-radius: 2rem;
+  }
+  
+  .form-label-group>input,
+  .form-label-group>label {
+    padding: 3%;
+  }
+
+

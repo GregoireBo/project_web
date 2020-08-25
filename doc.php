@@ -146,7 +146,7 @@
 <html lang="fr">
 <head>
   <title>Documentation classes</title>
-    <link rel="shortcut icon" href="https://fr.wikipedia.org/static/favicon/wikipedia.ico"/>
+  <link rel="shortcut icon" href="https://fr.wikipedia.org/static/favicon/wikipedia.ico"/>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
