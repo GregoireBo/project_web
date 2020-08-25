@@ -33,17 +33,16 @@
         public function __construct(string $name, string $text, string $return = ''){
             $this->sName = $name;
             $this->sText = $text;
+            if ($return == '') $return = 'Pas de valeur de retour';
             $this->sReturn = $return;
         }
 
         public function getHTML(){
-            if ($this->sReturn != '')$br = '<br>';
-            else $br = '';
             return '
                 <br>    
                 <br>    
                 <h4>'.$this->sName.'</h4>
-                <i>'.$this->sReturn.'</i>'.$br.'
+                <i>'.$this->sReturn.'</i><br>
                 '.$this->sText.'
             ';
         }
@@ -147,6 +146,7 @@
 <html lang="fr">
 <head>
   <title>Documentation classes</title>
+    <link rel="shortcut icon" href="https://fr.wikipedia.org/static/favicon/wikipedia.ico"/>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -156,7 +156,7 @@
 <body>
 
 <div class="container">
-    <h2>Documentation classe</h2>
+    <h2>Documentation classes</h2>
     <p></p>
     
   <ul class="nav nav-tabs">
