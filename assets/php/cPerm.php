@@ -15,7 +15,7 @@ class cPerm{
         $this->m_sDescript = $descript;
     }
 
-    public function loadByID($id){
+    public function loadByID(int $id){
         $oSQL = new cSQL();
         $oSQL->execute('SELECT ID,CODE,DESCRIPT FROM PERM WHERE ID=?',[$id]);
         if ($oSQL->next()){

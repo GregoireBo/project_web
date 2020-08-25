@@ -17,7 +17,7 @@ class cGroup{
         $this->m_oPermList->loadByGrpID($id);
     }
 
-    public function loadByID($id){
+    public function loadByID(int $id){
         $oSQL = new cSQL();
         $oSQL->execute('SELECT ID,NAME FROM GRP WHERE ID=?',[$id]);
         if ($oSQL->next()){

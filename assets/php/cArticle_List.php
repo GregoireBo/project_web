@@ -3,14 +3,14 @@ include_once("cSQL.php");
 include_once("cArticle.php");
 
 class cArticle_List{
-    private $m_aArticle;
+    private $m_aoArticle;
 
     public function __construct(){
-        $this->m_aArticle = [];
+        $this->m_aoArticle = [];
     }
 
     private function add(cArticle $article){
-        array_push($this->m_aArticle, $article);
+        array_push($this->m_aoArticle, $article);
     }
 
     public function loadAll(int $limit = 10){
@@ -24,7 +24,7 @@ class cArticle_List{
         }
     }
 
-    public function getArticles(){return $this->m_aArticle;}
+    public function getArticles(){return $this->m_aoArticle;}
 } 
 
 

@@ -42,7 +42,7 @@ class cArticle{
     public function getID(){return $this->m_iId;}
     public function getUser(){return $this->m_oUser;}
     public function getTitle(){return $this->m_sTitle;}
-    public function getTExt(){return $this->m_sText;}
+    public function getText(){return $this->m_sText;}
     public function getPictureLink(){return $this->m_sPictureLink;}
     public function getShortDescript(){return $this->m_sShortDescript;}
 } 

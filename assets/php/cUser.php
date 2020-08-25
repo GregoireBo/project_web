@@ -57,6 +57,13 @@ class cUser{
         return false;
     }
 
+    public function switchActive(){
+        $oSQL = new cSQL();
+        if ($this->isActive()) return $oSQL->execute('UPDATE USER SET IS_ACTIVE=false WHERE ID=?',[$this->getID()]);
+        else return $oSQL->execute('UPDATE USER SET IS_ACTIVE=true WHERE ID=?',[$this->getID()]);
+    }
+
+
     private function pseudo_exist($pseudo){
         $oSQL = new cSQL();
         $oSQL->execute('SELECT ID WHERE pseudo=?',[$pseudo]);
@@ -65,6 +72,8 @@ class cUser{
         }
         else return false;
     }
+
+    
 
     public function getID(){return $this->m_iId;}
     public function getPseudo(){return $this->m_sPseudo;}

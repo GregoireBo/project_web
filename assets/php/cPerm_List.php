@@ -3,14 +3,14 @@ include_once("cSQL.php");
 include_once("cPerm.php");
 
 class cPerm_List{
-    private $m_aPerm;
+    private $m_aoPerm;
 
     public function __construct(){
-        $this->m_aPerm = [];
+        $this->m_aoPerm = [];
     }
 
     private function add(cPerm $perm){
-        array_push($this->m_aPerm, $perm);
+        array_push($this->m_aoPerm, $perm);
     }
 
     public function loadByGrpID($id){
@@ -29,7 +29,7 @@ class cPerm_List{
         }
     }
 
-    public function getPerms(){return $this->m_aPerm;}
+    public function getPerms(){return $this->m_aoPerm;}
 } 
 
 
