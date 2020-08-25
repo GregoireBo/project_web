@@ -1,2 +1,2 @@
 RewriteEngine On
-RewriteRule ^doc.html$ /doc [L]
+RewriteRule doc$ /doc.php
