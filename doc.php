@@ -19,8 +19,8 @@
                 $members .= $member->getHTML();
             }
             return '
-            <div id="'.$this->id.'" class="tab-pane fade">
-                <h3>'.$this->sName.'</h3>
+            <div id="'.$this->id.'" class="tab-pane fade" role="tabpanel" aria-labelledby="tab-'.$this->id.'">
+                <h2>'.$this->sName.'</h2>
                 '.$members.'
             </div>
         ';
@@ -38,108 +38,60 @@
         }
 
         public function getHTML(){
+            $br_text = '';
+            if ($this->sText != '') $br_text = '<br>';
             return '
                 <br>    
-                <br>    
-                <h4>'.$this->sName.'</h4>
-                <i>'.$this->sReturn.'</i><br>
+                <h4><strong>'.$this->sName.'</strong></h4>
+                <i>'.$this->sReturn.'</i>'.$br_text.'
                 '.$this->sText.'
+                <br><br>
             ';
         }
     }
 
     $aClass = [];
 
-    //cUser
-    $aClassTemp = new cClass('cUser');
-    $aClassTemp->add("loadByID(int ID)",
-        "Permet de charger l'objet user en fonction de son ID");
-    $aClassTemp->add("connect(string pseudo, string pass)",
-        "Permet de vérifier si le pseudo et le mot de passe correspondent à un utilisateur, puis charge l'utilisateur correspondant dans l'objet.        ",
-        "Retourne true si réussi et false si échoué");
-    $aClassTemp->add("inscript(string pseudo, string pass)",
-        "Permet d'inscrire un utilisateur après avoir vérifié que son pseudo n'existait pas déjà, puis avoir hashé son mot de passe.",
-        "Retourne true si réussi et false si échoué");
-    $aClassTemp->add("switchActive()",
-        "Permet d'activer l'utilisateur s'il est désactivé et de le désactiver si il est activé.",
-        "Retourne true si réussi et false si échoué");
-    $aClassTemp->add("getID()","",
-        "Retourne l'id de l'utilisateur");
-    $aClassTemp->add("getPseudo()","",
-        "Retourne le pseudo de l'utilisateur");
-    $aClassTemp->add("isActive()","",
-        "Retourne true si l'utilisateur est activé, et false si l'utilisateur est désactivé");
-    $aClassTemp->add("getGroup()","",
-        "Retourne l'objet group de l'utilisateur");
-    array_push($aClass,$aClassTemp);
+    $myPath = getcwd();
+    $path = 'assets/php/';
+    $files = glob($path.'c*.php');
 
-    //cUser_List
-    $aClassTemp = new cClass('cUser_List');
-    $aClassTemp->add("loadAll()",
-        "Charge tout les utilisateurs");
-    $aClassTemp->add("getUsers()","",
-        "Retourne une liste d'objet cUser");
-    array_push($aClass,$aClassTemp);
+    //pour tout fichier
+    foreach ($files as $file) {
+        $titlepos = strpos($file, '/c')+1;
+        $title = substr($file,$titlepos);
+        $title = str_replace('.php', '', $title);
 
-    //cGroup
-    $aClassTemp = new cClass('cGroup');
-    $aClassTemp->add("loadByID(int id)",
-        "Permet de charger l'objet group en fonction de son ID");
-    $aClassTemp->add("getID()","",
-        "Retourne l'id du groupe");
-    $aClassTemp->add("getName()","",
-        "Retourne le nom du groupe");
-    $aClassTemp->add("getPermList()","",
-        "Retourne une liste d'objet cPerm, correspondant aux permissions du groupe");
-    array_push($aClass,$aClassTemp);
+        $file = $myPath.'./'.$file;
+        $file = fopen($file,'r');
 
-    //cPerm
-    $aClassTemp = new cClass('cPerm');
-    $aClassTemp->add("loadByID(int id)",
-        "Permet de charger l'objet perm en fonction de son ID");
-    $aClassTemp->add("getID()","",
-        "Retourne l'id de la permission");
-    $aClassTemp->add("getCode()","",
-        "Retourne le code de la permission");
-    $aClassTemp->add("getDescript()","",
-        "Retourne la description de la permission");
-    array_push($aClass,$aClassTemp);
+        $aClassTemp = new cClass($title);
 
-    //cPerm_List
-    $aClassTemp = new cClass('cPerm_List');
-    $aClassTemp->add("loadByGrpID(int id)",
-        "Charge toutes les permissions par rapport à l'id du groupe");
-    $aClassTemp->add("getPerms()","",
-        "Retourne une liste d'objet cPerm");
-    array_push($aClass,$aClassTemp);
+        //pour toute ligne
+        while(!feof($file)){
+            $line = fgets($file);
+            $name='';
+            $return='';
+            $desc='';
 
-    //cArticle
-    $aClassTemp = new cClass('cArticle');
-    $aClassTemp->add("loadByID(int id)",
-        "Permet de charger l'objet article en fonction de son ID");
-    $aClassTemp->add("getID()","",
-        "Retourne l'id de l'article");
-    $aClassTemp->add("getUser()","",
-        "Retourne l'objet cUser correspondant à l'auteur de l'article'");
-    $aClassTemp->add("getTitle()","",
-        "Retourne le titre de l'article");
-    $aClassTemp->add("getText()","",
-    "Retourne le titre de l'article");
-    $aClassTemp->add("getTitle()","",
-    "Retourne le texte de l'article");
-    $aClassTemp->add("getPictureLink()","",
-    "Retourne le lien vers l'image de l'article");
-    $aClassTemp->add("getShortDescript()","",
-    "Retourne la description courte de l'article");
-    array_push($aClass,$aClassTemp);
+            if (strpos($line,'//-') > 0){
+                $line = fgets($file);
+                $name = str_replace('//','',$line);
+                $line = fgets($file);
+                $return = str_replace('//','',$line);
+                $line = fgets($file);
+                $desc = str_replace('//','',$line);
+                //$line = fgets($file);
+                //$name = str_replace('{','',$line);
 
-    //cArticle_List
-    $aClassTemp = new cClass('cArticle_List');
-    $aClassTemp->add("loadAll(int limit = 10)",
-        "Charge un certain nombre d'article du blog dans la limite passée en paramètre (10 par défaut)");
-    $aClassTemp->add("getArticles()","",
-        "Retourne une liste d'objet cArticle");
-    array_push($aClass,$aClassTemp);
+                $name = trim($name);
+                $return = trim($return);
+                $desc = trim($desc);
+                $aClassTemp->add($name,$desc,$return);
+            }
+        }
+        array_push($aClass,$aClassTemp);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -156,13 +108,13 @@
 <body>
 
 <div class="container">
-    <h2>Documentation classes</h2>
+    <h1>Documentation classes</h1>
     <p></p>
     
   <ul class="nav nav-tabs">
     <?php 
         foreach ($aClass as $class) {
-            echo '<li><a data-toggle="tab" href="#'.$class->id.'">'.$class->sName.'</a></li>';
+            echo '<li><a data-toggle="tab" href="#'.$class->id.'" id="tab-'.$class->id.'" aria-controls="'.$class->id.'">'.$class->sName.'</a></li>';
         }
     ?>
   </ul>

@@ -13,18 +13,27 @@ class cArticle_List{
         array_push($this->m_aoArticle, $article);
     }
 
+    //-
+    //loadAll(int limit = 10)
+    //
+    //Charge un certain nombre d'article du blog dans la limite passée en paramètre (10 par défaut)
     public function loadAll(int $limit = 10){
         $oSQL = new cSQL();
 
         $oSQL->execute('SELECT ID FROM ARTICLE LIMIT '.$limit);
-        if ($oSQL->next()){
+        while ($oSQL->next()){
             $cArticleTemp = new cArticle();
             $cArticleTemp->loadByID($oSQL->colNameInt('ID'));
             $this->add($cArticleTemp);
         }
     }
 
-    public function getArticles(){return $this->m_aoArticle;}
+    //-
+    //getArticles()
+    //Retourne une liste d'objet cArticle
+    //
+    public function getArticles(){
+        return $this->m_aoArticle;}
 } 
 
 

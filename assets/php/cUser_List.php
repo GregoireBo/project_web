@@ -13,18 +13,27 @@ class cUser_List{
         array_push($this->m_aoUser, $user);
     }
 
+    //-
+    //loadAll()
+    //
+    //Charge tout les utilisateurs
     public function loadAll(){
         $oSQL = new cSQL();
 
-        $oSQL->execute('SELECT ID FROM ARTICLE');
-        if ($oSQL->next()){
+        $oSQL->execute('SELECT ID FROM USER ORDER BY ID');
+        while ($oSQL->next()){
             $cUserTemp = new cUser();
             $cUserTemp->loadByID($oSQL->colNameInt('ID'));
             $this->add($cUserTemp);
         }
     }
 
-    public function getUsers(){return $this->m_aoUser;}
+    //-
+    //getUsers()
+    //Retourne une liste d'objet cUser
+    //
+    public function getUsers(){
+        return $this->m_aoUser;}
 } 
 
 

@@ -24,6 +24,10 @@ class cArticle{
 
     }
 
+    //-
+    //loadByID(int id)
+    //
+    //Permet de charger l'objet article en fonction de son ID
     public function loadByID($id){
         $oSQL = new cSQL();
         $oSQL->execute('SELECT ID,USER_ID,TITLE,TEXT,PICTURE_LINK,SHORT_DESC FROM ARTICLE WHERE ID=?',[$id]);
@@ -39,12 +43,47 @@ class cArticle{
         }
     }
 
-    public function getID(){return $this->m_iId;}
-    public function getUser(){return $this->m_oUser;}
-    public function getTitle(){return $this->m_sTitle;}
-    public function getText(){return $this->m_sText;}
-    public function getPictureLink(){return $this->m_sPictureLink;}
-    public function getShortDescript(){return $this->m_sShortDescript;}
+    //-
+    //getID()
+    //Retourne l'id de l'article
+    //
+    public function getID(){
+        return $this->m_iId;}
+
+    //-
+    //getUser()
+    //Retourne l'objet cUser correspondant à l'auteur de l'article
+    //
+    public function getUser(){
+        return $this->m_oUser;}
+
+    //-
+    //getTitle()
+    //Retourne le titre de l'article
+    //
+    public function getTitle(){
+        return $this->m_sTitle;}
+
+    //-
+    //getText()
+    //Retourne le titre de l'article
+    //
+    public function getText(){
+        return $this->m_sText;}
+
+    //-
+    //getPictureLink()
+    //Retourne le lien vers l'image de l'article
+    //
+    public function getPictureLink(){
+        return $this->m_sPictureLink;}
+
+    //-
+    //getShortDescript()
+    //Retourne la description courte de l'article
+    //
+    public function getShortDescript(){
+        return $this->m_sShortDescript;}
 } 
 
 

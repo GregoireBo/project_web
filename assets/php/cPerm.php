@@ -15,6 +15,10 @@ class cPerm{
         $this->m_sDescript = $descript;
     }
 
+    //-
+    //loadByID(int id)
+    //
+    //Permet de charger l'objet perm en fonction de son ID
     public function loadByID(int $id){
         $oSQL = new cSQL();
         $oSQL->execute('SELECT ID,CODE,DESCRIPT FROM PERM WHERE ID=?',[$id]);
@@ -27,9 +31,26 @@ class cPerm{
         }
     }
 
-    public function getID(){return $this->m_iId;}
-    public function getCode(){return $this->m_sCode;}
-    public function getDescript(){return $this->m_sDescript;}
+    //-
+    //getID()
+    //Retourne l'id de la permission
+    //
+    public function getID(){
+        return $this->m_iId;}
+
+    //-
+    //getCode()
+    //Retourne le code de la permission
+    //
+    public function getCode(){
+        return $this->m_sCode;}
+
+    //-
+    //getDescript()
+    //Retourne la description de la permission
+    //
+    public function getDescript(){
+        return $this->m_sDescript;}
 } 
 
 
