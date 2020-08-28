@@ -5,16 +5,18 @@
     $currentIndex = '';
     $currentAdmin = '';
     $currentArticles = '';
+    $currentCreateArticles = '';
 
     if ($iPage && $page == 'index') $currentIndex = $active;
     if ($iPage && $page == 'admin') $currentAdmin = $active;
     if ($iPage && $page == 'articles') $currentArticles = $active;
+    if ($iPage && $page == 'create_article') $currentCreateArticles = $active;
 ?>
 
 <nav class="mb-1 navbar navbar-expand-lg navbar-light bg-warning">
     <a class="navbar-brand" href="<?php echo MAIN_PATH;?>">
         <img src="<?php echo MAIN_PATH;?>assets/img/logo.png" width="30" height="30" class="d-inline-block align-top mr-2" alt="logo carotte">
-        Santé et saveur
+        Santé et saveurs
     </a>
     <div class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
@@ -28,6 +30,13 @@
                     Articles
                 </a>
             </li>
+            <?php if (isset($user) && $user->canCreateArticle())echo '
+            <li class="nav-item dropdown '.$currentCreateArticles.'">
+                <a class="nav-link" href="'.MAIN_PATH.'create_article">
+                    Ajouter un article
+                </a>
+            </li>
+            '; ?>
             <?php if (isset($user) && $user->havePerm('ADMIN_PANEL'))echo '
             <li class="nav-item dropdown '.$currentAdmin.'">
                 <a class="nav-link dropdown-toggle" href="#" id="navDropAdmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

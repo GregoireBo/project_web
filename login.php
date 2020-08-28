@@ -1,6 +1,12 @@
 <?php 
 $no_nav = true;
 include_once("assets/php/_includes.php");
+
+
+if (isset($user) && $user->isConnected()){
+  header("Location: ".MAIN_PATH);
+}
+
 ?>
 
 
@@ -30,7 +36,7 @@ include_once("assets/php/_includes.php");
               <a href="<?php echo MAIN_PATH;?>"><i class="fas fa-arrow-left"></i> Retour à l'accueil</a>
               <h5 class="card-title text-center mt-3">Connexion</h5>
               <form class="form-signin" method="post">
-                <?php if(isset($_GET['e']) && $_GET['e']=='psmdp') echo '<span class="text-danger">Le pseudo ou le mot de passe est incorrect</span>'; ?>
+                <?php if(isset($_GET['e']) && $_GET['e']=='psmdp') echo '<div class="text-danger  mb-2">Le pseudo ou le mot de passe est incorrect</div>'; ?>
                 <div class="form-label-group">
                   <input type="text" name="inputPseudo" id="inputPseudo" class="form-control" placeholder="Pseudo" required autofocus>
                 </div>
@@ -63,9 +69,3 @@ include_once("assets/php/_includes.php");
 
 
 
-<?php
-if (isset($user) && $user->isConnected()){
-  header("Location: ".MAIN_PATH);
-}
-
-?>

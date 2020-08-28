@@ -79,7 +79,7 @@ class cUser{
 
     //-
     //inscript(string pseudo, string pass)
-    //Retourne true si réussi et false si échoué
+    //Retourne val si réussi ou un code d'erreur sinon
     //Permet d'inscrire un utilisateur après avoir vérifié que son pseudo n'existait pas déjà, puis avoir hashé son mot de passe
     public function inscript(string $pseudo, string $pass){
         $oSQL = new cSQL();
@@ -87,11 +87,11 @@ class cUser{
             $pass = password_hash($pass, PASSWORD_DEFAULT);
             $token = $this->genToken();
             if ($oSQL->execute('INSERT INTO USER (PSEUDO,PASSWORD,IS_ACTIVE,TOKEN) VALUES (?,?,?,?)',[$pseudo,$pass,0,$token])){
-                return true;
+                return 'val';
             }
-            else return false;
+            else return 'errInsert';
         }
-        else return false;
+        else return 'errPseudoExist';
     }
 
     //-
@@ -113,10 +113,10 @@ class cUser{
         else return $oSQL->execute('UPDATE USER SET IS_ACTIVE=true WHERE ID=?',[$this->getID()]);
     }
 
-    //vérifie sir un pseudo existe
+    //vérifie si un pseudo existe
     private function pseudo_exist($pseudo){
         $oSQL = new cSQL();
-        $oSQL->execute('SELECT ID WHERE pseudo=?',[$pseudo]);
+        $oSQL->execute('SELECT ID FROM USER WHERE pseudo=?',[$pseudo]);
         if ($oSQL->next()){{}
             return true;
         }
@@ -142,6 +142,14 @@ class cUser{
     //Permet de savoir si un utilisateur à la permission de ...
     public function havePerm(string $perm){
         return $this->m_oGroup->havePerm($perm);    
+    }
+
+    //-
+    //canCreateArticle(string perm)
+    //Retourne true si l'utilisateur à la permission de créer un article, false sinon
+    //Permet de savoir si un utilisateur à la permission de créer un article
+    public function canCreateArticle(){
+        return ($this->isConnected() && $this->havePerm('CREATE_ARTICLE'));
     }
 
     //genToken()

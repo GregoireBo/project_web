@@ -1,6 +1,34 @@
 <?php 
 $no_nav = true;
 include_once("assets/php/_includes.php");
+
+if (isset($user) && $user->isConnected()){
+  header("Location: ".MAIN_PATH);
+}
+
+$text = '';
+$color = 'danger';
+if (isset($_GET['e'])){
+  switch ($_GET['e']) {
+    case 'errInsert':
+    case 'err':
+      $text = 'Erreur lors de l\'inscription';
+      break;
+    case 'val':
+      $color = 'success';
+      $text = 'Inscription réussie, un administrateur va la valider';
+      break;
+    case 'errMdpCorr':
+      $text = 'Les mots de passe ne correspondent pas';
+      break;
+    case 'errPseudoExist':
+      $text = 'Le pseudo existe déjà';
+      break;
+    default:
+      break;
+  }
+}
+
 ?>
 
 
@@ -32,8 +60,7 @@ include_once("assets/php/_includes.php");
               <a href="<?php echo MAIN_PATH;?>" ><i class="fas fa-arrow-left"></i> Retour à l'accueil</a>
               <h5 class="card-title text-center mt-3">Inscription</h5>
               <form class="form-signin" method="post">
-                <?php if(isset($_GET['e']) && $_GET['e']=='err') echo '<span class="text-danger">Erreur lors de l\'inscription</span>'; ?>
-                <?php if(isset($_GET['e']) && $_GET['e']=='suc') echo '<span class="text-success">Inscription réussi, un administrateur va la valider.</span>'; ?>
+                <div class="text-<?php echo $color; ?> mb-2"><?php echo $text; ?></div>
                 <div class="form-label-group">
                   <input type="text" name="inputPseudo" id="inputPseudo" class="form-control" placeholder="Pseudo" required autofocus>
                 </div>
@@ -64,22 +91,13 @@ include_once("assets/php/_includes.php");
   if (isset($_POST['inputPseudo']) && isset($_POST['inputPassword'])){
     if ($_POST['inputPassword'] == $_POST['inputConfirmPassword']){
       if (isset($user)){
-        if($user->inscript($_POST['inputPseudo'], $_POST['inputPassword'])){
-          header("Location: ?e=suc");
-        }
-        else header("Location: ?e=err");
+        $return = $user->inscript($_POST['inputPseudo'], $_POST['inputPassword']);
+        header("Location: ?e=".$return);
       }
       else header("Location: ?e=err");
     }
-    else header("Location: ?e=mdp");
+    else header("Location: ?e=errMdpCorr");
   }
 ?>
 
 
-
-<?php
-if (isset($user) && $user->isConnected()){
-  header("Location: ".MAIN_PATH);
-}
-
-?>
