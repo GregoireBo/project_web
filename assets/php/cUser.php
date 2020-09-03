@@ -1,17 +1,20 @@
 <?php
 include_once("cSQL.php");
 include_once("cGroup.php");
+include_once("cArticle_List.php");
 
 class cUser{
     private $m_iId;
     private $m_sPseudo;
     private $m_bIsActive;
+    private $m_oArticles;
     private $m_oGroup;
     private $m_sToken;
     private $m_iPictureId;
 
     public function __construct(){
         $this->m_oGroup = new cGroup();
+        $this->m_oArticles = null;
     }
 
     public function load(int $id, string $pseudo, int $grp_id, bool $is_active, string $token, int $pictureId){
@@ -248,12 +251,24 @@ class cUser{
     }
 
     //-
-    //getActiveTextColor(bool invert)
+    //getActiveTextColor()
     //Retourne warning si l'utilisateur est désactivé et success si il est actif
     //
     public function getActiveTextColor(){
         if ($this->m_bIsActive) return 'success';
         else return 'warning';
+    }
+
+    //-
+    //getArticles()
+    //Retourne la liste des articles de l'utilisateur
+    //
+    public function getArticles(){
+        if ($this->m_oArticles == null) {
+            $this->m_oArticles = new cArticle_List();
+            $this->m_oArticles->loadByUserId($this->getId());
+        }
+        return $this->m_oArticles->getArticles();
     }
 } 
 

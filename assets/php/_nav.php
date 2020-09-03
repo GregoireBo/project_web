@@ -55,7 +55,7 @@
                     echo '
                     <li class="nav-item avatar dropleft">
                         <a class="nav-link dropdown-toggle text-secondary p-0" href="#"id="navDropUser"data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            '.$user->getPseudo(false,false).'
+                           
                             <img src="'.$user->getProfilPictureLink().'" class="rounded-circle z-depth-0"
                             alt="avatar image" height="35">
                         </a>

@@ -15,6 +15,7 @@
         switch ($_GET['r']) {
             case 'val':
                 $text = 'L\'article à bien été ajouté';
+                header('Location: '.MAIN_PATH);
                 break;
             case 'errUpload':
                 $text = 'Erreur lors de l\'upload';

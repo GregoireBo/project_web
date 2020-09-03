@@ -20,7 +20,22 @@ class cArticle_List{
     public function loadAll(int $limit = 10){
         $oSQL = new cSQL();
 
-        $oSQL->execute('SELECT ID FROM ARTICLE LIMIT '.$limit);
+        $oSQL->execute('SELECT ID FROM ARTICLE ORDER BY ID DESC LIMIT '.$limit);
+        while ($oSQL->next()){
+            $cArticleTemp = new cArticle();
+            $cArticleTemp->loadByID($oSQL->colNameInt('ID'));
+            $this->add($cArticleTemp);
+        }
+    }
+
+    //-
+    //loadByUserId
+    //
+    //Charge les articles d'un utilisateur
+    public function loadByUserId(int $user_id){
+        $oSQL = new cSQL();
+
+        $oSQL->execute('SELECT ID FROM ARTICLE WHERE USER_ID=? ORDER BY ID DESC',[$user_id]);
         while ($oSQL->next()){
             $cArticleTemp = new cArticle();
             $cArticleTemp->loadByID($oSQL->colNameInt('ID'));

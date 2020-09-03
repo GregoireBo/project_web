@@ -1,4 +1,5 @@
 RewriteEngine On
 RewriteRule ^profil$ user_profil.php [L]
 RewriteRule ^register$ register.php [L]
-RewriteRule ^profil/([1-9])$ user_profil.php?user_id=$1 [L]
+RewriteRule ^profil/([0-9]+)$ user_profil.php?user_id=$1 [L]
+RewriteRule ^article/([0-9]+)$ display_article.php?article_id=$1 [L]

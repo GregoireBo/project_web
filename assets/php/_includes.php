@@ -2,7 +2,7 @@
 const MAIN_PATH = '/project_web/';
 
 session_start();
-
+setlocale(LC_ALL,'fr_FR');
 
 if (!isset($no_nav)) $no_nav = false;
 
