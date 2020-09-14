@@ -101,6 +101,45 @@ class cUser{
     }
 
     //-
+    //update(string pseudo, int pictureId)
+    //Retourne val si réussi ou un code d'erreur sinon
+    //Permet de modifier l'utilisateur (pseudo et image)
+    public function update(string $pseudo, int $pictureId){
+        $oSQL = new cSQL();
+        if ($this->getPseudo(false,false) == $pseudo || !$this->pseudo_exist($pseudo)){
+            if ($oSQL->execute('UPDATE USER SET PSEUDO=?, PICTURE_ID=? WHERE ID = ?',[$pseudo,$pictureId,$this->getId()])){
+                $_SESSION['PSEUDO'] = $pseudo;
+                return 'ok';
+            }
+            else return 'nok';
+        }
+        else return 'pseudo_exist';
+    }
+
+    //-
+    //changePassword
+    //Retourne val si réussi ou un code d'erreur sinon
+    //Permet de modifier le mot de passe de l'utilisateur
+    public function changePassword(string $pass, string $newPass, string $newPass2){
+        $oSQL = new cSQL();
+        if ($newPass == $newPass2){
+            $oSQL->execute('SELECT PASSWORD FROM USER WHERE ID=?',[$this->getId()]);
+            if ($oSQL->next()){
+                if (password_verify($pass,$oSQL->colName('PASSWORD'))){
+                    $newPass = password_hash($newPass, PASSWORD_DEFAULT);
+                    if ($oSQL->execute('UPDATE USER SET PASSWORD=?WHERE ID = ?',[$newPass,$this->getId()])){
+                        return 'ok';
+                    }
+                    else return 'nok';
+                }
+                else return 'wrong_pass';
+            } 
+            else return "nok";
+        }
+        else return 'pass_not_same';
+    }
+
+    //-
     //deconnect()
     //
     //Déconnecte l'utilisateur
@@ -263,6 +302,14 @@ class cUser{
         if ($id = -1) $id = $this->m_iPictureId;
         if (in_array($id,$this->getListPic())) return MAIN_PATH.'assets/img/profil_pic/'.$id.'.png';
         else return MAIN_PATH.'assets/img/profil_pic/0.png';
+    }
+
+    //-
+    //getProfilPictureId()
+    //Retourne l'id de l'image de profil de l'utilisateur
+    //
+    public function getProfilPictureId(){
+        return $this->m_iPictureId;
     }
 
     //-

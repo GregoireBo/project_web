@@ -61,3 +61,5 @@
 
 </body>
 </html>
+
+<?php include_once('assets/php/_footer.php');?>

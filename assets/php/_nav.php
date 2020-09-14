@@ -61,6 +61,7 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navDropUser">
                             <a class="dropdown-item" href="'.MAIN_PATH.'profil">Profil</a>
+                            <a class="dropdown-item" href="'.MAIN_PATH.'edit_profil">Modifier le profil</a>
                             <a class="dropdown-item" href="'.MAIN_PATH.'deco.php">Déconnexion</a>
                         </div>
                     </li>

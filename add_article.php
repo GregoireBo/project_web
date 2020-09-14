@@ -18,29 +18,29 @@
         //AJOUT
         if ($mode == 'create_article' && isset($_FILES["picture"]["tmp_name"])){
             $response = $article->createArticle($user,$_POST['title'],$_POST['short_desc'],$_POST['text'],$_FILES["picture"]["tmp_name"]);
+            header("Location: ".MAIN_PATH."create_article/".$response);
         }
         //MODIFICATION
         else if ($mode == 'edit_article' && $_POST['id'] != ""){
             if ($article->loadById((int)$_POST['id'])){
                 $response = $article->editArticle($_POST['title'],$_POST['short_desc'],$_POST['text'],$_FILES["picture"]["tmp_name"]);
+                header("Location: ".MAIN_PATH."edit_article/".$article->getId()."/".$response);
             }
         }
-        header("Location: ?r=".$response);
     }
     $text = '';
     if (isset($_GET['r'])){
         switch ($_GET['r']) {
             case 'val':
                 $text = 'L\'article à bien été ajouté';
-                var_dump($article->getId());
                 if ($article->getId() == null) header('Location: '.MAIN_PATH);
-                else header('Location: '.MAIN_PATH).'article/'.$article->getId();
+                else header('Location: '.MAIN_PATH.'article/'.$article->getId());
                 break;
             case 'errUpload':
                 $text = 'Erreur lors de l\'upload';
                 break;
             case 'errImgSize':
-                $text = 'L\'image doit faire 800x300 pixels';
+                $text = 'L\'image doit faire 1100x400 pixels';
                 break;
             case 'errImgType':
                 $text = 'Le fichier doit être une image';
@@ -81,14 +81,11 @@
         </div>
         <div class="form-group">
             <label for="short_desc">Description</label>
-            <textarea class="form-control" name="short_desc" id="short_desc" rows="3" required>
-            <?php if ($mode == 'edit_article') echo $article->getShortDescript(); ?>
-            </textarea>
+            <textarea class="form-control" name="short_desc" id="short_desc" rows="3" required><?php if ($mode == 'edit_article') echo $article->getShortDescript(); ?></textarea>
         </div>
         <div class="form-group">
             <label for="text">Texte</label>
-            <textarea class="form-control" name="text" id="text" rows="10" required>
-            <?php if ($mode == 'edit_article') echo $article->getText(); ?></textarea>
+            <textarea class="form-control" name="text" id="text" rows="10" required><?php if ($mode == 'edit_article') echo $article->getText(); ?></textarea>
         </div>
         <div class="form-group">
             <label for="picture">Image d'illustration</label>
@@ -96,7 +93,7 @@
             <?php if ($mode != 'edit_article') echo 'required'?>
             >
         </div>
-        <button type="submit" class="btn btn-danger">Submit</button>
+        <button type="submit" class="btn btn-danger">Envoyer</button>
     </form>
 </div>
 </body>

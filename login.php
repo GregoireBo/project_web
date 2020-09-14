@@ -5,6 +5,8 @@ include_once("assets/php/_includes.php");
 if (isset($user) && $user->isConnected()){
   header("Location: ".MAIN_PATH);
 }
+//var_dump(password_verify('4','$2y$10$cqzUqY456gFVdfCETSmUseRQvsIqZU34jDTR/ur965EoBA4c/zZ2m'));
+//echo password_hash('4', PASSWORD_DEFAULT);
 
 ?>
 
