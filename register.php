@@ -31,6 +31,19 @@ if (isset($_GET['e'])){
 
 ?>
 
+<?php
+  if (isset($_POST['inputPseudo']) && isset($_POST['inputPassword'])){
+    if ($_POST['inputPassword'] == $_POST['inputConfirmPassword']){
+      if (isset($user)){
+        $return = $user->inscript($_POST['inputPseudo'], $_POST['inputPassword']);
+        header("Location: ?e=".$return);
+      }
+      else header("Location: ?e=err");
+    }
+    else header("Location: ?e=errMdpCorr");
+  }
+?>
+
 
 
 <style>
@@ -87,17 +100,6 @@ if (isset($_GET['e'])){
 </html>
 
 
-<?php
-  if (isset($_POST['inputPseudo']) && isset($_POST['inputPassword'])){
-    if ($_POST['inputPassword'] == $_POST['inputConfirmPassword']){
-      if (isset($user)){
-        $return = $user->inscript($_POST['inputPseudo'], $_POST['inputPassword']);
-        header("Location: ?e=".$return);
-      }
-      else header("Location: ?e=err");
-    }
-    else header("Location: ?e=errMdpCorr");
-  }
-?>
+
 
 

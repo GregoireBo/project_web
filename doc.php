@@ -106,6 +106,13 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
+<style>
+li{
+    margin-bottom:10px;
+}
+
+</style>
+
 
 <div class="container">
     <h1>Documentation classes</h1>
@@ -113,16 +120,24 @@
     
   <ul class="nav nav-tabs">
     <?php 
-        foreach ($aClass as $class) {
-            echo '<li><a data-toggle="tab" href="#'.$class->id.'" id="tab-'.$class->id.'" aria-controls="'.$class->id.'">'.$class->sName.'</a></li>';
-        }
+
     ?>
   </ul>
 
   <div class="tab-content">
     <?php 
         foreach ($aClass as $class) {
-            echo $class->getHTML();
+            //echo '<li><a data-toggle="tab" href="#'.$class->id.'" id="tab-'.$class->id.'" aria-controls="'.$class->id.'">'.$class->sName.'</a></li>';
+            echo '<h1>'.$class->sName.'</h1>';
+            echo '<ul>';
+            foreach ($class->aMember as $member) {
+                echo '<li>'
+                .$member->sName.'<br>'.
+                $member->sText.
+                
+                '</li>';
+            }
+            echo '</ul>';
         }
     ?>
   </div>

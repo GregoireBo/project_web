@@ -51,17 +51,20 @@ class cUser{
     //Permet de vérifier si le pseudo et le mot de passe correspondent à un utilisateur, puis charge l'utilisateur correspondant dans l'objet.
     public function connect(string $pseudo, string $pass){
         $oSQL = new cSQL();
-        $oSQL->execute('SELECT ID,PASSWORD FROM USER WHERE pseudo=? AND IS_ACTIVE=true',[$pseudo]);
+        $oSQL->execute('SELECT ID,PASSWORD,IS_ACTIVE FROM USER WHERE pseudo=?',[$pseudo]);
         if ($oSQL->next()){
-            if (password_verify($pass,$oSQL->ColName('PASSWORD'))){
-                $this->loadByID($oSQL->colNameInt('ID'));
-                $_SESSION['PSEUDO'] = $this->m_sPseudo;
-                $_SESSION['TOKEN'] = $this->m_sToken;
-                return true;
+            if ($oSQL->ColName('IS_ACTIVE') == 1){
+                if (password_verify($pass,$oSQL->ColName('PASSWORD'))){
+                    $this->loadByID($oSQL->colNameInt('ID'));
+                    $_SESSION['PSEUDO'] = $this->m_sPseudo;
+                    $_SESSION['TOKEN'] = $this->m_sToken;
+                    return "ok";
+                }
+                else return "nok";
             }
-            else return false;
+            else return "not_active";
         }
-        else return false;
+        else return "nok";
     }
 
     //-

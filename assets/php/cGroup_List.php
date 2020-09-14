@@ -40,7 +40,7 @@ class cGroup_List{
     //Retourne un objet html select avec ses options correspondant aux permissions
     //On peut lui passer en paramètre un groupe id pour qu'il le séléctionne (par défaut 0)
     public function getSelect(int $grp_id = 0){
-        $options = '<option value="0">Aucun</option>';
+        $options = '';
         foreach ($this->getGroups() as $group) {
             $selected = '';
             if ($group->getId() == $grp_id) $selected = 'selected';

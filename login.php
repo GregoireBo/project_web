@@ -2,11 +2,43 @@
 $no_nav = true;
 include_once("assets/php/_includes.php");
 
-
 if (isset($user) && $user->isConnected()){
   header("Location: ".MAIN_PATH);
 }
 
+?>
+
+
+
+
+<?php
+  $text = "";
+  if (isset($_GET['e'])){
+    switch ($_GET['e']) {
+      case 'ok':
+        $text = 'Connexion réussie';
+        break;
+      case 'not_active':
+        $text = 'Votre compte n\'est pas encore activé';
+        break;
+      case 'nok':
+        $text = 'Login ou mot de passe incorrect';
+        break;
+      default:
+        break;
+    }
+  }
+
+
+  if (isset($_POST['inputPseudo']) && isset($_POST['inputPassword'])){
+    if (isset($user)){
+      $connect_result = $user->connect($_POST['inputPseudo'], $_POST['inputPassword']);
+      if ($connect_result == "ok"){
+        header("Location: ".MAIN_PATH);
+      }
+      else header("Location: ?e=".$connect_result);
+    }
+  }
 ?>
 
 
@@ -36,7 +68,7 @@ if (isset($user) && $user->isConnected()){
               <a href="<?php echo MAIN_PATH;?>"><i class="fas fa-arrow-left"></i> Retour à l'accueil</a>
               <h5 class="card-title text-center mt-3">Connexion</h5>
               <form class="form-signin" method="post">
-                <?php if(isset($_GET['e']) && $_GET['e']=='psmdp') echo '<div class="text-danger  mb-2">Le pseudo ou le mot de passe est incorrect</div>'; ?>
+                <div class="text-danger  mb-2"><?php echo $text?></div>
                 <div class="form-label-group">
                   <input type="text" name="inputPseudo" id="inputPseudo" class="form-control" placeholder="Pseudo" required autofocus>
                 </div>
@@ -57,15 +89,6 @@ if (isset($user) && $user->isConnected()){
     </div>
   </body>
 </html>
-
-<?php
-  if (isset($_POST['inputPseudo']) && isset($_POST['inputPassword'])){
-    if (isset($user)){
-      if ($user->connect($_POST['inputPseudo'], $_POST['inputPassword'])){}
-      else header("Location: ?e=psmdp");
-    }
-  }
-?>
 
 
 
