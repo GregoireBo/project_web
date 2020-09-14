@@ -151,11 +151,36 @@ class cUser{
     }
 
     //-
-    //canCreateArticle(string perm)
+    //canCreateArticle()
     //Retourne true si l'utilisateur à la permission de créer un article, false sinon
     //Permet de savoir si un utilisateur à la permission de créer un article
     public function canCreateArticle(){
         return ($this->isConnected() && $this->havePerm('CREATE_ARTICLE'));
+    }
+
+    //-
+    //canEditArticle()
+    //Retourne true si l'utilisateur à la permission de modifier un article, false sinon
+    //Permet de savoir si un utilisateur à la permission de modifier un article (si il en est propriétaire OU qu'il à la permission d'édit n'importe lequel)
+    public function canEditArticle(cArticle $article){
+        if ($this->isConnected()){
+            if ($article->getUser()->getId() == $this->getId()){
+                return true;
+            }
+            else if ($this->havePerm('EDIT_ARTICLE')){
+                return true;
+            }
+            else return false;
+        }
+        else return false;
+    }
+
+    //-
+    //canDeleteArticle()
+    //Retourne true si l'utilisateur à la permission de supprimer un article, false sinon
+    //Permet de savoir si un utilisateur à la permission de supprimer un article (meme si il n'en est pas propriétaire)
+    public function canDeleteArticle(){
+        return ($this->isConnected() && $this->havePerm('DELETE_ARTICLE'));
     }
 
     //genToken()

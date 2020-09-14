@@ -27,11 +27,12 @@ class cArticle{
 
     //-
     //loadByID(int id)
-    //
+    //return true si ça à marché, false sinon
     //Permet de charger l'objet article en fonction de son ID
     public function loadByID($id){
         $oSQL = new cSQL();
-        $oSQL->execute('SELECT ID,USER_ID,TITLE,TEXT,SHORT_DESC,UNIX_TIMESTAMP(TIMESTAMP) as TIMESTAMP FROM ARTICLE WHERE ID=?',[$id]);
+        $oSQL->execute('SELECT ID,USER_ID,TITLE,TEXT,SHORT_DESC,UNIX_TIMESTAMP(TIMESTAMP) 
+                        as TIMESTAMP FROM ARTICLE WHERE ID=? AND IS_DELETED = 0',[$id]);
         if ($oSQL->next()){
             $this->load(
                 $oSQL->colNameInt('ID'),
@@ -41,40 +42,83 @@ class cArticle{
                 $oSQL->colName('SHORT_DESC'),
                 $oSQL->colName('TIMESTAMP')
             );
+            return true;
         }
+        else return false;
     }
 
-//-
-//createArticle
-//ATTENTION WAMP DOIT AVOIR LA PERMISSION D'ECRIRE DANS LE DOSSIER
-//Permet d'ajouter un article à la base de donnée
-public function createArticle(cUser $user, string $title,string $text, string $shortDescript, $file){
-    $oSQL = new cSQL();
-    if ($user->canCreateArticle()){
-        if (exif_imagetype($file)){//test si c'est une image
-            $imgSize = getimagesize($file);
-            if($imgSize[0] == 110 && $imgSize[1] == 400){//test si l'image fait 1100x400
-                if ($oSQL->execute('SELECT ID FROM ARTICLE ORDER BY ID DESC LIMIT 1')){//récupère l'id de l'article
-                    $oSQL->next();
-                    $id = $oSQL->colNameInt('ID');
-                    $id++;
-                    if(move_uploaded_file($file, getcwd().'/assets/img/articles/'.$id.'.jpg')) {//upload de l'image
-                        if ($oSQL->execute('INSERT INTO ARTICLE (USER_ID,TITLE,SHORT_DESC,TEXT) VALUES (?,?,?,?)'
-                        ,[$user->getId(),$title,$text,$shortDescript])){
-                                return 'val';
+    //-
+    //createArticle
+    //ATTENTION WAMP DOIT AVOIR LA PERMISSION D'ECRIRE DANS LE DOSSIER
+    //Permet d'ajouter un article à la base de donnée
+    public function createArticle(cUser $user, string $title,string $text, string $shortDescript, $file){
+        $oSQL = new cSQL();
+        if ($user->canCreateArticle()){
+            if (exif_imagetype($file)){//test si c'est une image
+                $imgSize = getimagesize($file);
+                if($imgSize[0] == 1100 && $imgSize[1] == 400){//test si l'image fait 1100x400
+                    if ($oSQL->execute('SELECT ID FROM ARTICLE ORDER BY ID DESC LIMIT 1')){//récupère l'id de l'article
+                        $oSQL->next();
+                        $id = $oSQL->colNameInt('ID');
+                        $id++;
+                        if(move_uploaded_file($file, getcwd().'/assets/img/articles/'.$id.'.jpg')) {//upload de l'image
+                            if ($oSQL->execute('INSERT INTO ARTICLE (USER_ID,TITLE,SHORT_DESC,TEXT) VALUES (?,?,?,?)'
+                            ,[$user->getId(),$title,$text,$shortDescript])){
+                                    return 'val';
+                            }
+                            else return 'errInsert';
                         }
-                        else return 'errInsert';
+                        else return 'errUpload';
                     }
-                    else return 'errUpload';
+                    else return 'errSelect';
                 }
-                else return 'errSelect';
+                else return 'errImgSize';
             }
-            else return 'errImgSize';
+            else return 'errImgType';
         }
-        else return 'errImgType';
+        else return 'errNoPerm';
     }
-    else return 'errNoPerm';
-}
+
+    //-
+    //editArticle
+    //ATTENTION WAMP DOIT AVOIR LA PERMISSION D'ECRIRE DANS LE DOSSIER
+    //Permet de modifier un article
+    public function editArticle(string $title,string $text, string $shortDescript, $file = ''){
+        $oSQL = new cSQL();
+        if ($this->getId() != null && $this->getUser()->canEditArticle($this)){
+            if ($file != ''){
+                if (exif_imagetype($file)){//test si c'est une image
+                    $imgSize = getimagesize($file);
+                    if($imgSize[0] == 1100 && $imgSize[1] == 400){//test si l'image fait 1100x400
+                        if(move_uploaded_file($file, getcwd().'/assets/img/articles/'.$this->getId().'.jpg')) {//upload de l'image
+                        }
+                        else return 'errUpload';
+                    }
+                    else return 'errImgSize';
+                }
+                else return 'errImgType';
+            }
+            if ($oSQL->execute('UPDATE ARTICLE SET TITLE=?,SHORT_DESC=?,TEXT=? WHERE ID=?'
+                            ,[$title,$text,$shortDescript,$this->getId()])){
+                                    return 'val';
+            }
+            else return 'errUpdate';
+        }
+        else return 'errNoPerm';
+    }
+
+    //-
+    //deleteArticle()
+    //Return true si ça à marché, false sinon
+    //Supprime un article si l'utilisateur à la permission
+    public function deleteArticle(cUser $user){
+        $oSQL = new cSQL();
+        if ($user->canDeleteArticle()){
+            $oSQL->execute('UPDATE ARTICLE SET IS_DELETED=true WHERE ID=?',[$this->getID()]);
+            return true;
+        }
+        return false;
+    }
 
     //-
     //getID()

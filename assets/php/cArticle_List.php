@@ -20,7 +20,7 @@ class cArticle_List{
     public function loadAll(int $limit = 10){
         $oSQL = new cSQL();
 
-        $oSQL->execute('SELECT ID FROM ARTICLE ORDER BY ID DESC LIMIT '.$limit);
+        $oSQL->execute('SELECT ID FROM ARTICLE WHERE IS_DELETED = 0 ORDER BY ID DESC LIMIT '.$limit);
         while ($oSQL->next()){
             $cArticleTemp = new cArticle();
             $cArticleTemp->loadByID($oSQL->colNameInt('ID'));
@@ -35,7 +35,7 @@ class cArticle_List{
     public function loadByUserId(int $user_id){
         $oSQL = new cSQL();
 
-        $oSQL->execute('SELECT ID FROM ARTICLE WHERE USER_ID=? ORDER BY ID DESC',[$user_id]);
+        $oSQL->execute('SELECT ID FROM ARTICLE WHERE USER_ID=? AND IS_DELETED = 0 ORDER BY ID DESC',[$user_id]);
         while ($oSQL->next()){
             $cArticleTemp = new cArticle();
             $cArticleTemp->loadByID($oSQL->colNameInt('ID'));
@@ -49,6 +49,7 @@ class cArticle_List{
     //
     public function getArticles(){
         return $this->m_aoArticle;}
+
 } 
 
 
