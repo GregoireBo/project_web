@@ -92,7 +92,7 @@ class cUser{
         if (!$this->pseudo_exist($pseudo)){
             $pass = password_hash($pass, PASSWORD_DEFAULT);
             $token = $this->genToken();
-            if ($oSQL->execute('INSERT INTO USER (PSEUDO,PASSWORD,IS_ACTIVE,TOKEN) VALUES (?,?,?,?)',[$pseudo,$pass,0,$token])){
+            if ($oSQL->execute('INSERT INTO USER (PSEUDO,PASSWORD,IS_ACTIVE,TOKEN,GRP_ID) VALUES (?,?,?,?,?)',[$pseudo,$pass,0,$token,2])){
                 return 'val';
             }
             else return 'errInsert';
