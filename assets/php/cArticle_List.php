@@ -17,10 +17,10 @@ class cArticle_List{
     //loadAll(int limit = 10)
     //
     //Charge un certain nombre d'article du blog dans la limite passée en paramètre (10 par défaut)
-    public function loadAll(int $limit = 10){
+    public function loadAll(int $offset = 0, int $limit = 10){
         $oSQL = new cSQL();
 
-        $oSQL->execute('SELECT ID FROM ARTICLE WHERE IS_DELETED = 0 ORDER BY ID DESC LIMIT '.$limit);
+        $oSQL->execute('SELECT ID FROM ARTICLE WHERE IS_DELETED = 0 ORDER BY ID DESC LIMIT '.$offset.', '.$limit);
         while ($oSQL->next()){
             $cArticleTemp = new cArticle();
             $cArticleTemp->loadByID($oSQL->colNameInt('ID'));
@@ -48,12 +48,20 @@ class cArticle_List{
     //Retourne une liste d'objet cArticle
     //
     public function getArticles(){
-        return $this->m_aoArticle;}
-
+        return $this->m_aoArticle;
+    }
+    
+    //-
+    //getTotalNumberArticles()
+    //Retourne le nombre total d'articles
+    //
+    public function getTotalNumberArticles()
+    {
+        $oSQL = new cSQL();
+        $oSQL->execute('SELECT COUNT(ID) AS CNT FROM ARTICLE WHERE IS_DELETED = 0');
+        if ($oSQL->next()) {
+            return $oSQL->colNameInt('CNT');
+        }
+    }
 } 
-
-
-
-
-
 ?>

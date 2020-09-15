@@ -5,7 +5,7 @@ class cSQL{
     public $oReq;
     public $aData;
     function __construct(string $host = "", string $database = "", string $user = "", string $password = ""){
-        if ($host=="" && $database=="" && $user=="" && $password=="") $this->connect('localhost', 'projet_web', 'root', '');
+        if ($host=="" && $database=="" && $user=="" && $password=="") $this->connect('localhost', 'project_web', 'root', '');
         else $this->connect($host, $database, $user, $password);
     }
     function connect(string $host, string $database, string $user, string $password){

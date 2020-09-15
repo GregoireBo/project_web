@@ -152,7 +152,7 @@ class cArticle{
 
     //-
     //getText()
-    //Retourne le titre de l'article
+    //Retourne le texte de l'article
     //
     public function getText(){
         return $this->m_sText;}
@@ -185,9 +185,5 @@ class cArticle{
     public function getLink(){
         return MAIN_PATH.'article/'.$this->getId();}
 } 
-
-
-
-
 
 ?>
