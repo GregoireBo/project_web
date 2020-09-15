@@ -18,7 +18,10 @@
             <img src="<?php echo MAIN_PATH;?>assets/img/logo.png" width="30" height="30" class="d-inline-block align-top mr-2" alt="logo carotte">
             Santé et saveurs
         </a>
-        <div class="collapse navbar-collapse">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="dropdown">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="nav navbar-nav mr-auto">
                 <li class="nav-item <?php echo $currentIndex; ?>">
                     <a class="nav-link" href="<?php echo MAIN_PATH?>">
@@ -65,12 +68,12 @@
                     else{
                         echo '
                         <li class="nav-item">
-                            <a class="nav-link p-1 ml-2 text-light btn btn-danger" href="'.MAIN_PATH.'login">
+                            <a class="nav-link p-1 ml-2 mt-1 text-light btn btn-danger" href="'.MAIN_PATH.'login">
                                 Connexion
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link p-1 ml-2 text-light btn btn-danger" href="'.MAIN_PATH.'register">
+                            <a class="nav-link p-1 ml-2 mt-1 text-light btn btn-danger" href="'.MAIN_PATH.'register">
                                 Inscription
                             </a>
                         </li>
