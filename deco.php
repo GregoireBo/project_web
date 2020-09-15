@@ -4,5 +4,5 @@
     if (isset($user)){
         $user->deconnect();
     }
-    else header("Location:".MAIN_PATH);
 ?>
+<meta http-equiv="refresh" content="0;URL=<?=MAIN_PATH?>">

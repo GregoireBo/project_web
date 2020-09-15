@@ -145,7 +145,6 @@ class cUser{
     //Déconnecte l'utilisateur
     public function deconnect(){
         session_destroy();
-        header("Location:".MAIN_PATH);
     }
 
     //-
