@@ -52,11 +52,12 @@ class cArticle{
     //ATTENTION WAMP DOIT AVOIR LA PERMISSION D'ECRIRE DANS LE DOSSIER
     //Permet d'ajouter un article à la base de donnée
     public function createArticle(cUser $user, string $title,string $text, string $shortDescript, $file){
+        $fileLink = $file["tmp_name"];
         $oSQL = new cSQL();
         if ($user->canCreateArticle()){
-            if (exif_imagetype($file)){//test si c'est une image
+            if (exif_imagetype($fileLink)){//test si c'est une image
                 //redimmensionnement image
-                $this->resizePic($file, 1100, 400);
+                $this->resizePic($fileLink, 1100, 400);
                 if ($oSQL->execute('SELECT ID FROM ARTICLE ORDER BY ID DESC LIMIT 1')){//récupère l'id de l'article
                     $oSQL->next();
                     $id = $oSQL->colNameInt('ID');
@@ -83,13 +84,14 @@ class cArticle{
     //ATTENTION WAMP DOIT AVOIR LA PERMISSION D'ECRIRE DANS LE DOSSIER
     //Permet de modifier un article
     public function editArticle(string $title,string $text, string $shortDescript, $file = ''){
+        $fileLink = $file["tmp_name"];
         $oSQL = new cSQL();
         if ($this->getId() != null && $this->getUser()->canEditArticle($this)){
-            if ($file != ''){
-                if (exif_imagetype($file)){//test si c'est une image
+            if ($fileLink != ''){
+                if (exif_imagetype($fileLink)){//test si c'est une image
                     //redimmensionnement image
                     $this->resizePic($file, 1100, 400);
-                    if(move_uploaded_file($file, getcwd().'/assets/img/articles/'.$this->getId().'.jpg')) {//upload de l'image
+                    if(move_uploaded_file($fileLink, getcwd().'/assets/img/articles/'.$this->getId().'.jpg')) {//upload de l'image
                     }
                     else return 'errUpload';
                 }
@@ -108,12 +110,32 @@ class cArticle{
     //resizePic()
     //Redimensionne l'image passée en paramètre
     //
-    private function resizePic(string $img, int $width, int $height){
-        $imageSize = getimagesize($img);
-        $imageRessource= imagecreatefromjpeg($img);
-        $imageFinal = imagecreatetruecolor($width, $height);
-        $final = imagecopyresampled($imageFinal, $imageRessource, 0,0,0,0, $width, $height, $imageSize[0], $imageSize[1]);
-        imagejpeg($imageFinal, $img, 100);
+    private function resizePic(array $file, int $width, int $height){
+        $img = $file["tmp_name"];
+        $imgSize = getimagesize($img);
+        $imgType = $imgSize[2];
+        switch ($imgType) {
+            case IMAGETYPE_PNG:
+                $imgRessource= imagecreatefrompng($img);
+                $imgFinal = imagecreatetruecolor($width, $height);
+                $final = imagecopyresampled($imgFinal, $imgRessource, 0,0,0,0, $width, $height, $imgSize[0], $imgSize[1]);
+                imagepng($imgFinal, $img, 9);
+                break;
+            case IMAGETYPE_GIF:
+                $imgRessource= imagecreatefromgif($img);
+                $imgFinal = imagecreatetruecolor($width, $height);
+                $final = imagecopyresampled($imgFinal, $imgRessource, 0,0,0,0, $width, $height, $imgSize[0], $imgSize[1]);
+                imagegif($imgFinal, $img, 100);
+                break;
+            case IMAGETYPE_JPEG:
+                $imgRessource= imagecreatefromjpeg($img);
+                $imgFinal = imagecreatetruecolor($width, $height);
+                $final = imagecopyresampled($imgFinal, $imgRessource, 0,0,0,0, $width, $height, $imgSize[0], $imgSize[1]);
+                imagejpeg($imgFinal, $img, 100);
+                break;
+            default:
+                break;
+        }
     } 
 
     //-

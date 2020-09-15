@@ -17,12 +17,12 @@
         && isset($_POST['text'])){
         //AJOUT
         if ($mode == 'create_article' && isset($_FILES["picture"]["tmp_name"])){
-            $response = $article->createArticle($user,$_POST['title'],$_POST['short_desc'],$_POST['text'],$_FILES["picture"]["tmp_name"]);
+            $response = $article->createArticle($user,$_POST['title'],$_POST['short_desc'],$_POST['text'],$_FILES["picture"]);
         }
         //MODIFICATION
         else if ($mode == 'edit_article' && $_POST['id'] != ""){
             if ($article->loadById((int)$_POST['id'])){
-                $response = $article->editArticle($_POST['title'],$_POST['short_desc'],$_POST['text'],$_FILES["picture"]["tmp_name"]);
+                $response = $article->editArticle($_POST['title'],$_POST['short_desc'],$_POST['text'],$_FILES["picture"]);
             }
         }
     }
