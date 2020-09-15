@@ -33,7 +33,7 @@
     <div class="card card_article col-5 offset-1 mb-3" style="height: 24rem">
     
       <!-- Card content -->
-      <div class="card-header d-flex flex-row bg-transparent">
+      <div class="card-header d-flex flex-row bg-transparent overflow-hidden">
         <!-- Avatar -->
         <img src="<?= $articleFor->getUser()->getProfilPictureLink() ?>" class="rounded-circle mr-3" height="50px" width="50px" alt="avatar">
 
@@ -49,7 +49,11 @@
 
 
       <div class="card-footer bg-transparent">
-       <small class="text-muted"><i class="far fa-clock pr-2"></i><?= $articleFor->getFormatedDate() ?></small>
+       
+       <small class="text-muted">
+        <i class="far fa-user pr-2"></i><?= $articleFor->getUser()->getPseudo(false,true) ?> |
+        <i class="far fa-clock pr-2"></i><?= $articleFor->getFormatedDate() ?>
+      </small>
       </div>
 
       <div class="card-footer bg-transparent">

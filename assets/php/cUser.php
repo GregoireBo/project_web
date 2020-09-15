@@ -238,6 +238,30 @@ class cUser{
     }
 
     //-
+    //follow
+    //Retourne true si réussi et false si échoué
+    //Suis un utilisateur
+    public function follow(cUser $otherUser){
+        $oSQL = new cSQL();
+        if(!$this->isFollowing($otherUser)){
+            return $oSQL->execute('INSERT INTO FOLLOW (USER_ID,FOLLOWED_USER_ID) VALUES (?,?)',[$this->getID(),$otherUser->getId()]); 
+        }
+        else return false;
+    }
+
+    //-
+    //unfollow
+    //Retourne true si réussi et false si échoué
+    //permet de ne plus suivre un utilisateur
+    public function unfollow(cUser $otherUser){
+        $oSQL = new cSQL();
+        if($this->isFollowing($otherUser)){
+            return $oSQL->execute('DELETE FROM FOLLOW WHERE USER_ID=? AND FOLLOWED_USER_ID=?',[$this->getID(),$otherUser->getId()]); 
+        }
+        else return false;
+    }
+
+    //-
     //getID()
     //Retourne l'id de l'utilisateur
     //
@@ -344,6 +368,50 @@ class cUser{
             $this->m_oArticles->loadByUserId($this->getId());
         }
         return $this->m_oArticles->getArticles();
+    }
+
+    //-
+    //getListFollowing()
+    //Retourne la liste des utilisateurs que l'user follow
+    //
+    public function getListFollowing($limit = 0){
+        $oSQL = new cSQL();
+        $tabUser = [];
+        $textLimit = '';
+        if ($limit != 0) $textLimit = ' LIMIT '.$limit;
+        $oSQL->execute('SELECT FOLLOWED_USER_ID as ID FROM FOLLOW WHERE USER_ID = ? ORDER BY ID DESC'.$textLimit,[$this->getId()]);
+        while ($oSQL->next()){
+            $oUserTemp = new cUser();
+            $oUserTemp->loadByID($oSQL->colNameInt('ID'));
+            array_push($tabUser,$oUserTemp);
+        }
+        return $tabUser;
+    }
+    
+    //-
+    //isFollowing()
+    //Retourne true si l'utilisateur follow l'utilisateur passé en paramètre, false sinon
+    //
+    public function isFollowing(cUser $otherUser){
+        $oSQL = new cSQL();
+        $oSQL->execute('SELECT ID FROM FOLLOW WHERE USER_ID = ? AND FOLLOWED_USER_ID = ?',[$this->getId(),$otherUser->getId()]);
+        if ($oSQL->next()){{}
+            return true;
+        }
+        else return false;
+    }
+
+    //-
+    //countFollow()
+    //Retourne le nombre de follow de l'utilisateur
+    //
+    public function countFollow(){
+        $oSQL = new cSQL();
+        $oSQL->execute('SELECT COUNT(ID) as CNT FROM FOLLOW WHERE USER_ID = ?',[$this->getId()]);
+        if ($oSQL->next()){{}
+            return $oSQL->colNameInt('CNT');
+        }
+        else return 0;
     }
 } 
 

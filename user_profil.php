@@ -11,6 +11,17 @@
     }
     else header("Location:".MAIN_PATH);
 
+    if ($user->getId() != null && $user->getId() != $profil_user->getId()){
+      if (isset($_POST['btn_follow'])){
+        $user->follow($profil_user);
+      }
+      if (isset($_POST['btn_unfollow'])){
+        $user->unfollow($profil_user);
+      }
+    }
+
+    $tabFollowing = $profil_user->getListFollowing(5);
+
 ?>
 
 
@@ -26,13 +37,60 @@
               <h4><?php echo $profil_user->getPseudo(true,false); ?></h4>
               <p class="text-secondary mb-1"><?php echo $profil_user->getGroup()->getName(); ?></p>
               <p><i class="fas fa-circle text-<?php echo $profil_user->getActiveTextColor();?>"></i> <?php echo $profil_user->isActiveText();?></p>
-              <!--<button class="btn btn-primary">Follow</button> -->
+              
+              <form action="" method="post" enctype="multipart/form-data">
+              <?php
+              if ($user->getId() != null && $user->getId() != $profil_user->getId()){
+                  if($user->isFollowing($profil_user)){
+                    echo '
+                      <button class="btn bg-light text-dark btn-outline-primary border-danger" name="btn_unfollow">
+                        Ne plus suivre <i class="fas fa-heart text-danger"></i>
+                      </button> 
+                    ';
+                  }
+                  else{
+                    echo '
+                    <button class="btn btn-primary  text-dark bg-warning border-danger" name="btn_follow">
+                      Suivre <i class="far fa-heart text-danger"></i>
+                    </button> 
+                  ';
+                  }
+                }
+              ?>
+              </form>
               <!--<button class="btn btn-outline-primary">Message</button>-->
             </div>
           </div>
         </div>
       </div>
+      
+      
+      <!--follow-->
+      <?php if (count($tabFollowing)){
+        echo '
+        <div class="card mt-3">
+          <div class="card-body ">
+              <div class="text-center h5 font-weight-bold">Suit</div>
+              <hr>
+        ';
+                foreach ($tabFollowing as $userFollow) {
+                  echo '
+                  <div class="mt-3">
+                    <img class="rounded-circle z-depth-0" width="50" src="'.$userFollow->getProfilPictureLink().'" alt="image_user">
+                    '.$userFollow->getPseudo().'
+                  </div>
+                  ';
+                }
+                if ($profil_user->countFollow() > 5){
+                  echo '<div class="mt-3">Et d\'autres...</div>';
+                }
+        echo '
+            </div>
+        </div>
+      ';}?>
     </div>
+
+    <!--articles-->
     <div class="col-md-12 col-xl-8">
       <div class="card mb-3">
         <div class="card-body">
