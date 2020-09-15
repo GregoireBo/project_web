@@ -74,7 +74,7 @@
             >
         </div>
         <div class="form-group">
-            <label for="title">Title</label>
+            <label for="title">Titre</label>
             <input type="text" class="form-control" name="title" id="title" required 
                 <?php if ($mode == 'edit_article') echo 'value="'.$article->getTitle().'"'; ?>
             >
@@ -96,7 +96,7 @@
             <?php if ($mode != 'edit_article') echo 'required'?>
             >
         </div>
-        <button type="submit" class="btn btn-danger">Submit</button>
+        <button type="submit" class="btn btn-danger">Poster</button>
     </form>
 </div>
 </body>

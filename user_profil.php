@@ -13,6 +13,15 @@
 
 ?>
 
+<style>
+  .card {
+  transition-duration: 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0px 5px 20px grey;
+}
+</style>
 
 <body>
 <div class="container mt-5">
