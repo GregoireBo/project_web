@@ -57,12 +57,12 @@ class cArticle{
         if ($user->canCreateArticle()){
             if (exif_imagetype($fileLink)){//test si c'est une image
                 //redimmensionnement image
-                $this->resizePic($fileLink, 1100, 400);
+                $this->resizePic($file, 1100, 400);
                 if ($oSQL->execute('SELECT ID FROM ARTICLE ORDER BY ID DESC LIMIT 1')){//récupère l'id de l'article
                     $oSQL->next();
                     $id = $oSQL->colNameInt('ID');
                     $id++;
-                    if(move_uploaded_file($file, getcwd().'/assets/img/articles/'.$id.'.jpg')) {//upload de l'image
+                    if(move_uploaded_file($fileLink, getcwd().'/assets/img/articles/'.$id.'.jpg')) {//upload de l'image
                         if ($oSQL->execute('INSERT INTO ARTICLE (USER_ID,TITLE,SHORT_DESC,TEXT) VALUES (?,?,?,?)'
                         ,[$user->getId(),$title,$text,$shortDescript])){
                                 $this->loadById($id);
