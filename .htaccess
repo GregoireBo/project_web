@@ -16,3 +16,4 @@ RewriteRule ^article$ display_article.php [L]
 RewriteRule ^article/([0-9]+)/(.*)$ display_article.php?article_id=$1&a=$2 [L]
 
 RewriteRule ^([0-9]+)$ index.php?page_id=$1 [L]
+RewriteRule ^search/(.*)$ index.php?search=$1 [L]

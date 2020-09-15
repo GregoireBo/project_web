@@ -11,7 +11,16 @@
     if ($iPage && $page == 'admin') $currentAdmin = $active;
     if ($iPage && $page == 'articles') $currentArticles = $active;
     if ($iPage && $page == 'create_article') $currentCreateArticles = $active;
+
+    if (!isset($textSearch)) $textSearch = '';
 ?>
+<script>
+function sendSearchReq(){
+    var text = document.getElementById("search").value;
+    document.location.href="<?=MAIN_PATH?>search/"+text;
+}
+</script>
+
 <header>
     <nav class="mb-1 navbar navbar-expand-lg navbar-light bg-warning">
         <a class="navbar-brand" href="<?php echo MAIN_PATH;?>">
@@ -47,6 +56,15 @@
                 '; ?>
             </ul>
             <ul class="nav navbar-nav ml-auto nav-flex-icons">
+                <li class="nav-item avatar dropleft mr-5">
+                    <form onsubmit="sendSearchReq();return false;" class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Recherche" id="search"
+                    name="search" id="search" aria-label="Recherche" value="<?=$textSearch?>" >
+                    <button class="btn btn-outline-danger my-2 my-sm-0" type="submit" onclick="sendSearchReq()">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    </form>
+                </li>
                 <?php 
                 
                     if (isset($user) && $user->isConnected()){

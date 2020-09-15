@@ -9,6 +9,9 @@
     if (isset($_GET['page_id'])) {
       $pageIndex = $_GET['page_id'];
     }
+    
+    $textSearch = '';
+    if (isset($_GET['search']) && $_GET['search'] != '') $textSearch = $_GET['search'];
 
     $offset = ($pageIndex - 1) * 10;
   
@@ -16,7 +19,14 @@
     include_once("assets/php/_includes.php");
 
     $articleList = new cArticle_List();
-    $articleList->loadAll($offset, $limit);
+
+    
+    if ($textSearch != ''){
+      $articleList->loadSearch($textSearch, $limit);
+    }
+    else{
+      $articleList->loadAll($offset, $limit);
+    }
 
     $totalNumberArticles = $articleList->getTotalNumberArticles();
     $totalPages = ceil($totalNumberArticles / 10);
@@ -25,6 +35,13 @@
 
 <body>
 <div class="container mt-5">
+  <div class="offset-1 h3 row">
+    <?php
+      if ($textSearch != ''){
+        echo 'Résultats de recherche pour : '.$textSearch;
+      }
+    ?>
+  </div>
 <div class="row">
 <?php
   foreach($articleList->getArticles() as $articleFor) {
@@ -82,13 +99,15 @@
       $totalPages = 10;
     }
     ?>
-    <nav aria-label="Page navigation example">
+    <nav aria-label="nav">
       <ul class="pagination justify-content-center">
         <?php
-        for ($i; $i <= $totalPages; $i++) {
-          ?>
-            <li class="page-item <?php if ($pageIndex == $i){ echo 'disabled'; } ?>"><a class="page-link" href="<?= MAIN_PATH.$i ?>"><?= $i; ?></a></li>
-          <?php
+        if ($textSearch == ''){
+          for ($i; $i <= $totalPages; $i++) {
+            ?>
+              <li class="page-item <?php if ($pageIndex == $i){ echo 'disabled'; } ?>"><a class="page-link" href="<?= MAIN_PATH.$i ?>"><?= $i; ?></a></li>
+            <?php
+          }
         }
         ?>
       </ul>

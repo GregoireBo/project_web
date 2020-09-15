@@ -16,11 +16,26 @@ class cArticle_List{
     //-
     //loadAll(int limit = 10)
     //
-    //Charge un certain nombre d'article du blog dans la limite passée en paramètre (10 par défaut)
+    //Charge un certain nombre d'article du blog dans la limite passée en paramètre (10 par défaut) avec un offset pour les pages
     public function loadAll(int $offset = 0, int $limit = 10){
         $oSQL = new cSQL();
 
         $oSQL->execute('SELECT ID FROM ARTICLE WHERE IS_DELETED = 0 ORDER BY ID DESC LIMIT '.$offset.', '.$limit);
+        while ($oSQL->next()){
+            $cArticleTemp = new cArticle();
+            $cArticleTemp->loadByID($oSQL->colNameInt('ID'));
+            $this->add($cArticleTemp);
+        }
+    }
+
+    //-
+    //loadSearch
+    //
+    //Charge un certain nombre d'article du blog (avec la recherche passée en paramètre) dans la limite passée en paramètre (10 par défaut) avec un offset pour les pages
+    public function loadSearch(string $search, int $limit = 10){
+        $oSQL = new cSQL();
+        $search = '%'.$search.'%';
+        $oSQL->execute('SELECT ID FROM ARTICLE WHERE IS_DELETED = 0 AND TITLE LIKE ? ORDER BY ID DESC LIMIT '.$limit,[$search]);
         while ($oSQL->next()){
             $cArticleTemp = new cArticle();
             $cArticleTemp->loadByID($oSQL->colNameInt('ID'));
