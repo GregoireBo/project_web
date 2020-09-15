@@ -25,11 +25,6 @@
                         Accueil
                     </a>
                 </li>
-                <li class="nav-item <?php echo $currentArticles; ?>">
-                    <a class="nav-link" href="#">
-                        Articles
-                    </a>
-                </li>
                 <?php if (isset($user) && $user->canCreateArticle())echo '
                 <li class="nav-item dropdown '.$currentCreateArticles.'">
                     <a class="nav-link" href="'.MAIN_PATH.'create_article">

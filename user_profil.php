@@ -13,15 +13,6 @@
 
 ?>
 
-<style>
-  .card {
-  transition-duration: 0.2s;
-}
-
-.card:hover {
-  box-shadow: 0px 5px 20px grey;
-}
-</style>
 
 <body>
 <div class="container mt-5">
@@ -52,7 +43,7 @@
               if (sizeof($profil_user->getArticles()) == 0) echo '<div class="ml-4">Cet utilisateur n\'a pas écrit d\'article</div>';
               foreach ($profil_user->getArticles() as $article) {
                 ?>
-                <div class="card flex-md-row ml-4 mr-4 mt-4 box-shadow h-md-250">
+                <div class="card card_article flex-md-row ml-4 mr-4 mt-4 box-shadow h-md-250">
                   <div class="card-body d-flex flex-column align-items-start col-8">
                     <h3 class="mb-0">
                       <a class="text-dark" href="<?php echo $article->getLink();?>"><?php echo $article->getTitle();?></a>
@@ -77,4 +68,9 @@
   </div>
 </div>
 </body>
+
+<?php
+include_once('assets/php/_footer.php');
+?>
 </html>
+

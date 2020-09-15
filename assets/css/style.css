@@ -1,3 +1,16 @@
 .changeGrp{
     display : none;
 }
+
+.card_article {
+    transition-duration: 0.2s;
+}
+
+.card_article:hover {
+    box-shadow: 0px 5px 20px grey;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}

@@ -21,22 +21,7 @@
     $totalNumberArticles = $articleList->getTotalNumberArticles();
     $totalPages = ceil($totalNumberArticles / 10);
 ?>
-<style>
-    .collapse-content .fa.fa-heart:hover {
-  color: #f44336 !important;
-}
-.collapse-content .fa.fa-share-alt:hover {
-  color: #0d47a1 !important;
-}
 
-.card {
-  transition-duration: 0.2s;
-}
-
-.card:hover {
-  box-shadow: 0px 5px 20px grey;
-}
-</style>
 
 <body>
 <div class="container mt-5">
@@ -45,7 +30,7 @@
   foreach($articleList->getArticles() as $articleFor) {
   ?>
     <!-- Card -->
-    <div class="card col-5 offset-1 mb-3" style="height: 24rem">
+    <div class="card card_article col-5 offset-1 mb-3" style="height: 24rem">
     
       <!-- Card content -->
       <div class="card-header d-flex flex-row bg-transparent">
@@ -57,7 +42,7 @@
       </div>
     
       <!-- Card content -->
-      <div class="card-body overflow-auto">
+      <div class="card-body overflow-hidden">
               <!-- Text -->
           <p id="card-text collapseContent" class="card-text"><?= $articleFor->getShortDescript() ?></p>
       </div>
@@ -68,7 +53,7 @@
       </div>
 
       <div class="card-footer bg-transparent">
-        <a href="<?= $articleFor->getLink() ?>" class="btn btn-warning btn-sm">Accéder</a>
+        <a href="<?= $articleFor->getLink() ?>" class="btn btn-warning btn-sm">Lire la suite...</a>
       </div>
     </div>
     <?php
@@ -110,3 +95,7 @@
 </div>
 
 </body>
+
+<?php
+include_once('assets/php/_footer.php');
+?>

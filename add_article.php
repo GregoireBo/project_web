@@ -93,4 +93,7 @@
     </form>
 </div>
 </body>
+<?php
+include_once('assets/php/_footer.php');
+?>
 </html>
