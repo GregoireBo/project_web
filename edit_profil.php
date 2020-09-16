@@ -12,7 +12,7 @@ if (isset($_POST["pseudo"]) && isset($_POST["radio_pic"])){
     $response = $user->update($_POST["pseudo"], $pic);
     switch ($response) {
         case 'ok':
-            header("Location:".MAIN_PATH."profil");
+            redirect(MAIN_PATH.'profil');
             break;
         case 'pseudo_exist':
             $textGen = 'Le pseudo existe déjà';

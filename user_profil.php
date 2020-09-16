@@ -9,7 +9,7 @@
     else if (isset($user) && $user->isConnected()){
       $profil_user = $user;
     }
-    else header("Location:".MAIN_PATH);
+    else redirect(MAIN_PATH);
 
     if ($user->getId() != null && $user->getId() != $profil_user->getId()){
       if (isset($_POST['btn_follow'])){

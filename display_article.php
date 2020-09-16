@@ -8,18 +8,13 @@
         $article->loadById($_GET['article_id']);
     }
     if ($article->getId() == null){
-        header('Location: '.MAIN_PATH);
+        redirect(MAIN_PATH);
     }
     if (isset($_GET['a'])){
         switch ($_GET['a']) {
             case 'delete':
                 if ($article->deleteArticle($user)){
-                    header('Location: '.MAIN_PATH);
-                }
-                break;
-            case 'edit' :
-                if ($user->canEditArticle($article)){
-                    header('Location: '.MAIN_PATH.'edit_article/'.$article->getId());
+                    redirect(MAIN_PATH);
                 }
                 break;
             default:
@@ -33,7 +28,7 @@
     $btnDelete = '';
     if (isset($user)){
         if ($user->canEditArticle($article)){
-            $btnEdit = '<a class="btn btn-warning mr-2" href="'.$article->getId().'/edit"> Editer l\'article</a>';
+            $btnEdit = '<a class="btn btn-warning mr-2" href="'.MAIN_PATH.'edit_article/'.$article->getId().'"> Editer l\'article</a>';
         }
         if ($user->canDeleteArticle()){
             $btnDelete = '<a class="btn btn-danger mr-2" href="'.$article->getId().'/delete"> Supprimer l\'article</a>';

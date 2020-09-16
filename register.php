@@ -3,7 +3,7 @@ $no_nav = true;
 include_once("assets/php/_includes.php");
 
 if (isset($user) && $user->isConnected()){
-  header("Location: ".MAIN_PATH);
+  redirect(MAIN_PATH);
 }
 
 $text = '';
@@ -36,11 +36,11 @@ if (isset($_GET['e'])){
     if ($_POST['inputPassword'] == $_POST['inputConfirmPassword']){
       if (isset($user)){
         $return = $user->inscript($_POST['inputPseudo'], $_POST['inputPassword']);
-        header("Location: ?e=".$return);
+        redirect('?e='.$return);
       }
-      else header("Location: ?e=err");
+      else redirect('?e=err');
     }
-    else header("Location: ?e=errMdpCorr");
+    else redirect('?e=errMdpCorr');
   }
 ?>
 

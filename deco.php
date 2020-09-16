@@ -4,5 +4,5 @@
     if (isset($user)){
         $user->deconnect();
     }
+    redirect(MAIN_PATH);
 ?>
-<meta http-equiv="refresh" content="0;URL=<?=MAIN_PATH?>">

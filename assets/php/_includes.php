@@ -25,5 +25,10 @@ if (isset($_SESSION['PSEUDO']) && isset($_SESSION['TOKEN']))
 include_once("_head.php");
 if (!$no_nav) include_once("_nav.php");
 
+function redirect(string $path){
+    echo '<meta http-equiv="refresh" content="0;URL='.$path.'">';
+    exit();
+}
+
 ?>
 

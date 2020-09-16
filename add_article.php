@@ -30,8 +30,8 @@
     switch ($response) {
         case 'val':
             $text = 'L\'article à bien été ajouté';
-            if ($article->getId() == null) header('Location: '.MAIN_PATH);
-            else header('Location: '.MAIN_PATH.'article/'.$article->getId());
+            if ($article->getId() == null) redirect(MAIN_PATH);
+            else redirect(MAIN_PATH.'article/'.$article->getId());
             break;
         case 'errUpload':
             $text = 'Erreur lors de l\'upload';

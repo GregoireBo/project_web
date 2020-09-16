@@ -3,10 +3,8 @@ $no_nav = true;
 include_once("assets/php/_includes.php");
 
 if (isset($user) && $user->isConnected()){
-  header("Location: ".MAIN_PATH);
+  redirect(MAIN_PATH);
 }
-//var_dump(password_verify('4','$2y$10$cqzUqY456gFVdfCETSmUseRQvsIqZU34jDTR/ur965EoBA4c/zZ2m'));
-//echo password_hash('4', PASSWORD_DEFAULT);
 
 ?>
 
@@ -36,9 +34,9 @@ if (isset($user) && $user->isConnected()){
     if (isset($user)){
       $connect_result = $user->connect($_POST['inputPseudo'], $_POST['inputPassword']);
       if ($connect_result == "ok"){
-        header("Location: ".MAIN_PATH);
+        redirect(MAIN_PATH);
       }
-      else header("Location: ?e=".$connect_result);
+      else redirect('?e='.$connect_result);
     }
   }
 ?>
