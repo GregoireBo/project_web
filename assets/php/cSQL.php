@@ -53,6 +53,14 @@ class cSQL{
     function colNameBool(string $name){
         return (bool)$this->aData[$name];
     }
+
+    //-
+    //getError
+    //retourne l'erreur de la dernière requete
+    //
+    function getError(){
+        var_dump($this->oBdd->errorInfo());
+    }
 }
 
 

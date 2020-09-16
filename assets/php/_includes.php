@@ -15,6 +15,8 @@ include_once("cGroup.php");
 include_once("cGroup_List.php");
 include_once("cPerm.php");
 include_once("cPerm_List.php");
+include_once("cComment.php");
+include_once("cComment_List.php");
 
 $user = new cUser();
 if (isset($_SESSION['PSEUDO']) && isset($_SESSION['TOKEN']))

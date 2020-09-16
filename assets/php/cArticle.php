@@ -10,9 +10,11 @@ class cArticle{
     private $m_iTimestamp;
     private $m_sShortDescript;
     private $m_sPicDirectory;
+    private $m_oCommentList;
 
     public function __construct(){
         $this->m_oUser = new cUser();
+        $this->m_oCommentList = new cComment_List();
         $this->m_sPicDirectory = MAIN_PATH.'assets/img/articles/';
     }
 
@@ -23,6 +25,10 @@ class cArticle{
         $this->m_sText = $text;
         $this->m_sShortDescript = $shortDescript;
         $this->m_iTimestamp = $timestamp;
+    }
+
+    public function loadComments(){
+        $this->m_oCommentList->loadByArticleId($this->getId());
     }
 
     //-
@@ -206,6 +212,13 @@ class cArticle{
     //
     public function getLink(){
         return MAIN_PATH.'article/'.$this->getId();}
+
+    //-
+    //getComments()
+    //Retourne les commentaires
+    //
+    public function getComments(){
+        return $this->m_oCommentList;}
 } 
 
 ?>
