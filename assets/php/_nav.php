@@ -7,20 +7,21 @@ $currentAdmin = '';
 $currentArticles = '';
 $currentCreateArticles = '';
 
-    $tabLikes = $user->getListLikedArticles();
-    
-    if ($iPage && $page == 'index') $currentIndex = $active;
-    if ($iPage && $page == 'admin') $currentAdmin = $active;
-    if ($iPage && $page == 'articles') $currentArticles = $active;
-    if ($iPage && $page == 'create_article') $currentCreateArticles = $active;
+$tabLikes = $user->getListLikedArticles();
 
-    if (!isset($textSearch)) $textSearch = '';
+if ($iPage && $page == 'index') $currentIndex = $active;
+if ($iPage && $page == 'admin') $currentAdmin = $active;
+if ($iPage && $page == 'articles') $currentArticles = $active;
+if ($iPage && $page == 'create_article') $currentCreateArticles = $active;
+
+if (!isset($textSearch)) $textSearch = '';
+
 ?>
 <script>
-function sendSearchReq(){
-    var text = document.getElementById("search").value;
-    document.location.href="<?=MAIN_PATH?>search/"+text;
-}
+    function sendSearchReq() {
+        var text = document.getElementById("search").value;
+        document.location.href = "<?= MAIN_PATH ?>search/" + text;
+    }
 </script>
 
 <header>
@@ -59,49 +60,73 @@ function sendSearchReq(){
             </ul>
             <ul class="nav navbar-nav ml-auto nav-flex-icons">
                 <li class="nav-item avatar dropleft mr-5">
-                    <form onsubmit="sendSearchReq();return false;" class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Recherche" id="search"
-                    name="search" id="search" aria-label="Recherche" value="<?=$textSearch?>" >
-                    <button class="btn btn-outline-danger my-2 my-sm-0" type="submit" onclick="sendSearchReq()">
-                        <i class="fas fa-search"></i>
-                    </button>
+                    <form onsubmit="sendSearchReq();" class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Recherche" id="search" name="search" id="search" aria-label="Recherche" value="<?= $textSearch ?>">
+                        <button class="btn btn-outline-danger my-2 my-sm-0" type="submit" onclick="sendSearchReq()">
+                            <i class="fas fa-search"></i>
+                        </button>
                     </form>
                 </li>
-                <?php 
-                
-                    if (isset($user) && $user->isConnected()){
-                        echo '
-                        <li class="nav-item avatar dropleft">
-                            <a class="nav-link dropdown-toggle text-secondary p-0" href="#" id="navDropNotifs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="far fa-bell pr-2"></i>
-                            </a>
-                            <a class="nav-link dropdown-toggle text-secondary p-0" href="#"id="navDropUser"data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            
-                                <img src="'.$user->getProfilPictureLink().'" class="rounded-circle z-depth-0"
-                                height="35" alt="image utilisateur">
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navDropUser">
-                                <a class="dropdown-item" href="'.MAIN_PATH.'profil">Profil</a>
-                                <a class="dropdown-item" href="'.MAIN_PATH.'edit_profil">Modifier le profil</a>
-                                <a class="dropdown-item" href="'.MAIN_PATH.'deco.php">Déconnexion</a>
-                            </div>
-                        </li>
-                        ';
-                    }
-                    else{
-                        echo '
-                        <li class="nav-item">
-                            <a class="nav-link p-1 ml-2 mt-1 text-light btn btn-danger" href="'.MAIN_PATH.'login">
-                                Connexion
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link p-1 ml-2 mt-1 text-light btn btn-danger" href="'.MAIN_PATH.'register">
-                                Inscription
-                            </a>
-                        </li>
-                        ';
-                    }
+                <?php
+                if (isset($user) && $user->isConnected()) {
+                ?>
+                    <li class="nav-item dropleft">
+                        <a class="nav-link dropdown-toggle text-secondary p-0" href="#" id="navDropNotifs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="far fa-bell pr-2"></i>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navDropLikes">
+                            <?php
+                            if (count($tabLikes) > 0) {
+                                for ($i = 1; $i == 8; $i++) {
+                                    $likedArticle = $tabLikes[$i];
+                            ?>
+                                    <a class="dropdown-item">
+                                        <div class="card card_article col-6" style="max-width: 18rem;">
+                                            <div class="card-header">
+                                                <img class="rounded-circle z-depth-0" width="40" src="' . $likedArticle->getUser()->getProfilPictureLink() . '" alt="image_user"><small>
+                                                    <?php $likedArticle->getUser()->getPseudo(false, false) ?></small>
+                                            </div>
+
+                                            <div class="card-body text-dark">
+                                                <a href="' . $likedArticle->getLink() . '">
+                                                    <p class="card-title"><strong><?php $likedArticle->getTitle() ?></strong></p>
+                                                </a>
+                                                <p class="card-text"></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                            <?php
+                                }
+                            }
+                            ?>
+                        </div>
+                    </li>
+                    <li class="nav-item avatar dropleft">
+                        <a class="nav-link dropdown-toggle text-secondary p-0" href="#" id="navDropUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                            <img src="<?= $user->getProfilPictureLink() ?>" class="rounded-circle z-depth-0" height="35" alt="image utilisateur">
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navDropUser">
+                            <a class="dropdown-item" href="<?= MAIN_PATH ?>profil">Profil</a>
+                            <a class="dropdown-item" href="<?= MAIN_PATH ?>edit_profil">Modifier le profil</a>
+                            <a class="dropdown-item" href="<?= MAIN_PATH ?>deco.php">Déconnexion</a>
+                        </div>
+                    </li>
+                <?php
+                } else {
+                ?>
+                    <li class="nav-item">
+                        <a class="nav-link p-1 ml-2 mt-1 text-light btn btn-danger" href="<?= MAIN_PATH ?>login">
+                            Connexion
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link p-1 ml-2 mt-1 text-light btn btn-danger" href="<?= MAIN_PATH ?>register">
+                            Inscription
+                        </a>
+                    </li>
+                <?php
+                }
                 ?>
             </ul>
         </div>

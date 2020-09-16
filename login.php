@@ -89,6 +89,3 @@ if (isset($user) && $user->isConnected()){
     </div>
   </body>
 </html>
-
-
-

@@ -1,15 +1,5 @@
 <?php
     $page = 'index';
-    
-    include_once('assets/php/_includes.php');
-    $profil_user = new cUser();
-    if (isset($_GET['user_id']) && $profil_user->id_exist($_GET['user_id'])) {
-      $profil_user->loadById($_GET['user_id']);
-    }
-    else if (isset($user) && $user->isConnected()){
-      $profil_user = $user;
-    }
-    else redirect(MAIN_PATH);
 
 include_once('assets/php/_includes.php');
 $profil_user = new cUser();

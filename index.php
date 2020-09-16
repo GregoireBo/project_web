@@ -117,10 +117,9 @@ $totalPages = ceil($totalNumberArticles / 10);
       }
       ?>
     </div>
-
+    </div>
   </body>
-
   <?php
-    include_once('assets/php/_footer.php');
-  ?>
+   include_once('assets/php/_footer.php');
+ ?>
 </html>
