@@ -47,7 +47,7 @@
     $btnLike = '';
     $btnEdit = '';
     $btnDelete = '';
-    if (isset($user)){
+    if (isset($user) && $user->getId() != null){
         if ($user->canEditArticle($article)){
             $btnEdit = '<a class="btn btn-warning mr-2" href="'.MAIN_PATH.'edit_article/'.$article->getId().'"> Editer l\'article</a>';
         }

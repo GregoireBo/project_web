@@ -102,30 +102,6 @@ function sendSearchReq(){
                         </li>
                         ';
                     }
-
-                            <img src="<?= $user->getProfilPictureLink() ?>" class="rounded-circle z-depth-0" height="35" alt="image utilisateur">
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navDropUser">
-                            <a class="dropdown-item" href="<?= MAIN_PATH ?>profil">Profil</a>
-                            <a class="dropdown-item" href="<?= MAIN_PATH ?>edit_profil">Modifier le profil</a>
-                            <a class="dropdown-item" href="<?= MAIN_PATH ?>deco.php">Déconnexion</a>
-                        </div>
-                    </li>
-                <?php
-                } else {
-                ?>
-                    <li class="nav-item">
-                        <a class="nav-link p-1 ml-2 mt-1 text-light btn btn-danger" href="<?= MAIN_PATH ?>login">
-                            Connexion
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link p-1 ml-2 mt-1 text-light btn btn-danger" href="<?= MAIN_PATH ?>register">
-                            Inscription
-                        </a>
-                    </li>
-                <?php
-                }
                 ?>
             </ul>
         </div>
