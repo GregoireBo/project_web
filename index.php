@@ -1,9 +1,9 @@
-<?php 
-    $page = 'index';
+<?php
+$page = 'index';
 
-    // Pagination
-    $pageIndex = 1;
-    $limit = 10;
+// Pagination
+$pageIndex = 1;
+$limit = 10;
 
     // On récupère le num. de page
     if (isset($_GET['page_id'])) {
@@ -13,10 +13,7 @@
     $textSearch = '';
     if (isset($_GET['search']) && $_GET['search'] != '') $textSearch = $_GET['search'];
 
-    $offset = ($pageIndex - 1) * 10;
-  
-    $no_nav = false;
-    include_once("assets/php/_includes.php");
+$offset = ($pageIndex - 1) * 10;
 
     $articleList = new cArticle_List();
 
@@ -27,11 +24,15 @@
     else{
       $articleList->loadAll($offset, $limit);
     }
+$no_nav = false;
+include_once("assets/php/_includes.php");
 
-    $totalNumberArticles = $articleList->getTotalNumberArticles();
-    $totalPages = ceil($totalNumberArticles / 10);
+$articleList = new cArticle_List();
+$articleList->loadAll($offset, $limit);
+
+$totalNumberArticles = $articleList->getTotalNumberArticles();
+$totalPages = ceil($totalNumberArticles / 10);
 ?>
-
 
 <body>
 <div class="container mt-5">
@@ -70,6 +71,11 @@
        <small class="text-muted">
         <i class="far fa-user pr-2"></i><?= $articleFor->getUser()->getPseudo(false,true) ?> |
         <i class="far fa-clock pr-2"></i><?= $articleFor->getFormatedDate() ?>
+        <?php
+          if (($user->isConnected()) && ($user->hasLiked($articleFor))) {
+            echo ' | <i class="fas fa-heart pr-3"></i>';
+          }
+        ?>
       </small>
       </div>
 
@@ -77,27 +83,23 @@
         <a href="<?= $articleFor->getLink() ?>" class="btn btn-warning btn-sm">Lire la suite...</a>
       </div>
     </div>
+
     <?php
-  }
-?>
-</div>
 
-<?php
+    $i = 1;
+    // Si le nombre de pages dépasse 1
+    if ($totalPages > 1) {
+      // On positionne parmi les pages précédentes et suivantes
+      $i = $pageIndex - 4;
 
-  $i = 1;
-  // Si le nombre de pages dépasse 1
-  if ($totalPages > 1)
-  {
-    // On positionne parmi les pages précédentes et suivantes
-    $i = $pageIndex - 4;
-
-    if ($i < 1) { $i = 1; }
-    // Si le nombre de pages dépasse 10
-    if ($totalPages > 10)
-    {
-      // On met une limite
-      $totalPages = 10;
-    }
+      if ($i < 1) {
+        $i = 1;
+      }
+      // Si le nombre de pages dépasse 10
+      if ($totalPages > 10) {
+        // On met une limite
+        $totalPages = 10;
+      }
     ?>
     <nav aria-label="nav">
       <ul class="pagination justify-content-center">
@@ -113,12 +115,11 @@
       </ul>
     </nav>
     <?php
-  }
-?>
-</div>
+    }
+    ?>
+  </div>
 
 </body>
-
 <?php
 include_once('assets/php/_footer.php');
 ?>

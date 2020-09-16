@@ -1,5 +1,5 @@
 <?php
-    $page = 'index';
+    $page = 'display_article';
     
     include_once('assets/php/_includes.php');
 
@@ -34,7 +34,17 @@
     }
     $article->loadComments();
 
+    //bouton like
+    if ($user->getId() && $article->getId()) {
+        if (isset($_POST['btn_like'])) {
+          $user->like($article);
+        }
+        if (isset($_POST['btn_undoLike'])) {
+          $user->undoLike($article);
+        }
+      }
 
+    $btnLike = '';
     $btnEdit = '';
     $btnDelete = '';
     if (isset($user)){
@@ -44,9 +54,22 @@
         if ($user->canDeleteArticle()){
             $btnDelete = '<a class="btn btn-danger mr-2" href="'.$article->getId().'/delete"> Supprimer l\'article</a>';
         }
+        $btnLike .= '<form action="" method="post" enctype="multipart/form-data" class="mb-2">';
+        if ($user->hasLiked($article)) {
+            $btnLike .= '
+            <button type="submit" class="btn btn-primary text-dark bg-warning border-danger" name="btn_undoLike">
+            <i class="fas fa-heart text-danger"></i>
+            </button> ';
+          } else {
+            $btnLike .= '
+            <button type="submit" class="btn bg-light text-dark btn-outline-primary border-danger" name="btn_like">
+            <i class="far fa-heart text-danger"></i>
+            </button> ';
+          }
+        $btnLike .= '</form>';
     }
 
-    $btns = $btnEdit.$btnDelete;
+    $btns = $btnLike.$btnEdit.$btnDelete;
 ?>
 
 
