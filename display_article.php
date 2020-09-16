@@ -25,7 +25,7 @@
 
     //Commentaires
     if ($user->isConnected() && isset($_POST['comment']) && $_POST['comment'] != ''){
-        $article->getComments()->addComment($article,$user,$_POST['comment']);
+        $article->addComment($user,$_POST['comment']);
     }
     if($user->havePerm('DELETE_COMMENT') && isset($_POST['delete_comment']) && isset($_POST['comment_id'])){
         $comment = new cComment();

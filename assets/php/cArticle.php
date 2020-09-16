@@ -58,16 +58,18 @@ class cArticle{
     //ATTENTION WAMP DOIT AVOIR LA PERMISSION D'ECRIRE DANS LE DOSSIER
     //Permet d'ajouter un article à la base de donnée
     public function createArticle(cUser $user, string $title,string $text, string $shortDescript, $file){
+        $title = htmlspecialchars($title);
+        $text = htmlspecialchars($text);
+        $shortDescript = htmlspecialchars($shortDescript);
         $fileLink = $file["tmp_name"];
         $oSQL = new cSQL();
         if ($user->canCreateArticle()){
             if (exif_imagetype($fileLink)){//test si c'est une image
                 //redimmensionnement image
                 $this->resizePic($file, 1100, 400);
-                if ($oSQL->execute('SELECT ID FROM ARTICLE ORDER BY ID DESC LIMIT 1')){//récupère l'id de l'article
+                if ($oSQL->execute('SHOW TABLE STATUS LIKE \'ARTICLE\'')){//récupère l'id de l'article
                     $oSQL->next();
-                    $id = $oSQL->colNameInt('ID');
-                    $id++;
+                    $id = $oSQL->colNameInt('Auto_increment');
                     if(move_uploaded_file($fileLink, getcwd().'/assets/img/articles/'.$id.'.jpg')) {//upload de l'image
                         if ($oSQL->execute('INSERT INTO ARTICLE (USER_ID,TITLE,SHORT_DESC,TEXT) VALUES (?,?,?,?)'
                         ,[$user->getId(),$title,$text,$shortDescript])){
@@ -90,6 +92,9 @@ class cArticle{
     //ATTENTION WAMP DOIT AVOIR LA PERMISSION D'ECRIRE DANS LE DOSSIER
     //Permet de modifier un article
     public function editArticle(string $title,string $text, string $shortDescript, $file = ''){
+        $title = htmlspecialchars($title);
+        $text = htmlspecialchars($text);
+        $shortDescript = htmlspecialchars($shortDescript);
         $fileLink = $file["tmp_name"];
         $oSQL = new cSQL();
         if ($this->getId() != null && $this->getUser()->canEditArticle($this)){
@@ -143,6 +148,17 @@ class cArticle{
                 break;
         }
     } 
+
+    //-
+    //addComment
+    //
+    //Ajoute un article
+    public function addComment(cUser $user, string $text){
+        $text = htmlspecialchars($text);
+        $oSQL = new cSQL();
+        $oSQL->execute('INSERT INTO COMMENTS (ARTICLE_ID, USER_ID, TEXT) VALUES (?,?,?)',
+                        [$this->getId(),$user->getId(),$text]);
+    }
 
     //-
     //deleteArticle()

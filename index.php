@@ -83,6 +83,7 @@ $totalPages = ceil($totalNumberArticles / 10);
       <?php
         }
       ?>
+      </div>
       <?php
 
       $i = 1;
@@ -116,7 +117,6 @@ $totalPages = ceil($totalNumberArticles / 10);
       <?php
       }
       ?>
-    </div>
     </div>
   </body>
   <?php

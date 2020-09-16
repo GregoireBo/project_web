@@ -60,7 +60,7 @@ if (!isset($textSearch)) $textSearch = '';
             </ul>
             <ul class="nav navbar-nav ml-auto nav-flex-icons">
                 <li class="nav-item avatar dropleft mr-5">
-                    <form onsubmit="sendSearchReq();" class="form-inline my-2 my-lg-0">
+                    <form onsubmit="sendSearchReq();return false;" class="form-inline my-2 my-lg-0">
                         <input class="form-control mr-sm-2" type="search" placeholder="Recherche" id="search" name="search" id="search" aria-label="Recherche" value="<?= $textSearch ?>">
                         <button class="btn btn-outline-danger my-2 my-sm-0" type="submit" onclick="sendSearchReq()">
                             <i class="fas fa-search"></i>

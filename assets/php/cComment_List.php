@@ -30,16 +30,6 @@ class cComment_List{
     }
 
     //-
-    //addComment
-    //
-    //Ajoute un article
-    public function addComment(cArticle $article, cUser $user, string $text){
-        $oSQL = new cSQL();
-        $oSQL->execute('INSERT INTO COMMENTS (ARTICLE_ID, USER_ID, TEXT) VALUES (?,?,?)',
-                        [$article->getId(),$user->getId(),$text]);
-    }
-
-    //-
     //getComments()
     //Retourne une liste d'objet cComment
     //
