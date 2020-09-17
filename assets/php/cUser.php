@@ -505,7 +505,7 @@ class cUser
     //getListArticlesFromFollowedUsers()
     //Retourne les articles récemment sortis en fonction des utilisateurs suivis par notre profil
     //
-    public function getListArticlesFromFollowedUsers($fromWeek = 2, $limit)
+    public function getListArticlesFromFollowedUsers($fromWeek = 2, $limit = 5)
     {
         $oSQL = new cSQL();
         $tabUser = [];
@@ -533,7 +533,8 @@ class cUser
     public function countArticlesFromFollowedUsers($fromWeek = 2)
     {
         $oSQL = new cSQL();
-        $oSQL->execute('SELECT COUNT(ARTICLE.ID) as CNT FROM ARTICLE, USER, FOLLOW WHERE FOLLOW.USER_ID = ?
+        $oSQL->execute('SELECT COUNT(ARTICLE.ID) as CNT FROM ARTICLE, USER, FOLLOW
+        WHERE FOLLOW.USER_ID = ?
         AND FOLLOW.FOLLOWED_USER_ID = user.ID
         AND user.ID = article.USER_ID
         AND article.IS_DELETED = 0

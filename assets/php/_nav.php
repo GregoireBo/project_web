@@ -72,7 +72,6 @@ if (!isset($textSearch)) $textSearch = '';
                     $countArticlesFromFollowedUsers = $user->countArticlesFromFollowedUsers();
                 ?>
                     <li class="nav-item avatar dropleft mr-5">
-                        <button class="btn btn-outline-danger my-2 my-sm-0 my-2 my-lg-0" id="navDropArticlesFromFollowedUsers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" type="submit">
                             <?php
                             if ($countArticlesFromFollowedUsers) {
                                 $countNotifText = $countArticlesFromFollowedUsers;
@@ -80,10 +79,11 @@ if (!isset($textSearch)) $textSearch = '';
                                 if ($countArticlesFromFollowedUsers > 4) {
                                     $countNotifText = '...';
                                 }
-                                echo '<i class="fas fa-bell"></i>&nbsp&nbsp<span class="badge badge-light">' . $countNotifText . '</span>';
+                                echo '<button class="btn btn-outline-danger my-2 my-sm-0 my-2 my-lg-0" id="navDropArticlesFromFollowedUsers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" type="submit">
+                                <i class="fas fa-bell"></i>&nbsp&nbsp<span class="badge badge-light">' . $countNotifText . '</span>
+                                </button>';
                             }
                             ?>
-                        </button>
 
                         <div class="dropdown-menu" aria-labelledby="navDropArticlesFromFollowedUsers">
                             <?php
@@ -105,7 +105,7 @@ if (!isset($textSearch)) $textSearch = '';
                                         echo '<hr>';
                                     }
                                 }
-                                if ($countArticlesFromFollowedUsers > 1) {
+                                if ($countArticlesFromFollowedUsers > 5) {
                                     echo '<a href=\'\' data-backdrop="false" data-toggle="modal" data-target="#modalArticlesFromFollowed"><div class="mt-3 dropdown-item" >Tout voir...</div></a>';
                                 }
                             }
@@ -157,7 +157,7 @@ if (!isset($textSearch)) $textSearch = '';
                     <div class="container">
                         <div class="row">
                             <?php
-                            $tabArticlesFromFollowedUsers = $user->getListArticlesFromFollowedUsers(2, 5);
+                            $tabArticlesFromFollowedUsers = $user->getListArticlesFromFollowedUsers(2, 10);
                             foreach ($tabArticlesFromFollowedUsers as $articleFromFollowed) {
                                 echo '
                                 <div class="card card_article col-6" style="max-width: 18rem;">
