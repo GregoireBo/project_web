@@ -169,8 +169,8 @@ $tabLikes = $profil_user->getListLikedArticles(3);
                     $tabLikes = $profil_user->getListLikedArticles();
                   foreach ($tabLikes as $likedArticle) {
                   echo'
-                    <div class="card card_article col-6" style="max-width: 18rem;">
-                    <div class="card-header">
+                  <div class="card card_article col-6" style="max-width: 18rem;">
+                    <div class="card-header bg-transparent">
                       <img class="rounded-circle z-depth-0" width="40" src="' . $likedArticle->getUser()->getProfilPictureLink() . '" alt="image_user"><small>
                       ' . $likedArticle->getUser()->getPseudo(false, false) . '</small>
                     </div>

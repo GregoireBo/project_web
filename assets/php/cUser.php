@@ -455,12 +455,12 @@ class cUser
         if ($limit != 0) $textLimit = ' LIMIT ' . $limit;
         $oSQL->execute('SELECT LIKED_ARTICLE_ID as ID FROM LIKES WHERE USER_ID = ? ORDER BY ID DESC' . $textLimit, [$this->getId()]);
         while ($oSQL->next()) {
-          $oArticleTemp = new cArticle();
+            $oArticleTemp = new cArticle();
             $oArticleTemp->loadByID($oSQL->colNameInt('ID'));
-          array_push($tabUser, $oArticleTemp);
-     }
-     return $tabUser;
-}
+            array_push($tabUser, $oArticleTemp);
+        }
+        return $tabUser;
+    }
 
     //-
     //hasLiked()
@@ -496,6 +496,48 @@ class cUser
     {
         $oSQL = new cSQL();
         $oSQL->execute('SELECT COUNT(ID) as CNT FROM LIKES WHERE USER_ID = ?', [$this->getId()]);
+        if ($oSQL->next()) {
+            return $oSQL->colNameInt('CNT');
+        } else return 0;
+    }
+
+    //-
+    //getListArticlesFromFollowedUsers()
+    //Retourne les articles récemment sortis en fonction des utilisateurs suivis par notre profil
+    //
+    public function getListArticlesFromFollowedUsers($fromWeek = 2, $limit)
+    {
+        $oSQL = new cSQL();
+        $tabUser = [];
+        $textLimit = '';
+        if ($limit != 0) $textLimit = ' LIMIT ' . $limit;
+        $oSQL->execute('SELECT ARTICLE.ID as ID FROM USER, FOLLOW, ARTICLE
+        WHERE FOLLOW.USER_ID = ?
+        AND FOLLOW.FOLLOWED_USER_ID = USER.ID
+        AND USER.ID = ARTICLE.USER_ID
+        AND ARTICLE.IS_DELETED = 0
+        AND (WEEK(article.TIMESTAMP)) > (WEEk(CURDATE()) - ?)
+        ORDER BY ID DESC' . $textLimit, [$this->getId(), $fromWeek]);
+        while ($oSQL->next()) {
+            $oArticleTemp = new cArticle();
+            $oArticleTemp->loadByID($oSQL->colNameInt('ID'));
+            array_push($tabUser, $oArticleTemp);
+        }
+        return $tabUser;
+    }
+
+    //-
+    //countArticlesFromFollowedUsers()
+    //Retourne le nombre d'articles des utilisateurs suivis par notre profil
+    //
+    public function countArticlesFromFollowedUsers($fromWeek = 2)
+    {
+        $oSQL = new cSQL();
+        $oSQL->execute('SELECT COUNT(ARTICLE.ID) as CNT FROM ARTICLE, USER, FOLLOW WHERE FOLLOW.USER_ID = ?
+        AND FOLLOW.FOLLOWED_USER_ID = user.ID
+        AND user.ID = article.USER_ID
+        AND article.IS_DELETED = 0
+        AND (WEEK(article.TIMESTAMP)) > (WEEk(CURDATE()) - ?)', [$this->getId(), $fromWeek]);
         if ($oSQL->next()) {
             return $oSQL->colNameInt('CNT');
         } else return 0;

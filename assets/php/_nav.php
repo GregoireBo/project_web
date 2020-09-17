@@ -69,33 +69,44 @@ if (!isset($textSearch)) $textSearch = '';
                 </li>
                 <?php
                 if (isset($user) && $user->isConnected()) {
+                    $countArticlesFromFollowedUsers = $user->countArticlesFromFollowedUsers();
                 ?>
-                    <li class="nav-item dropleft">
-                        <a class="nav-link dropdown-toggle text-secondary p-0" href="#" id="navDropNotifs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="far fa-bell pr-2"></i>
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navDropLikes">
+                    <li class="nav-item avatar dropleft mr-5">
+                        <button class="btn btn-outline-danger my-2 my-sm-0 my-2 my-lg-0" id="navDropArticlesFromFollowedUsers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" type="submit">
                             <?php
-                            if (count($tabLikes) > 0) {
-                                for ($i = 1; $i == 8; $i++) {
-                                    $likedArticle = $tabLikes[$i];
-                            ?>
-                                    <a class="dropdown-item">
-                                        <div class="card card_article col-6" style="max-width: 18rem;">
-                                            <div class="card-header">
-                                                <img class="rounded-circle z-depth-0" width="40" src="' . $likedArticle->getUser()->getProfilPictureLink() . '" alt="image_user"><small>
-                                                    <?php $likedArticle->getUser()->getPseudo(false, false) ?></small>
-                                            </div>
+                            if ($countArticlesFromFollowedUsers) {
+                                $countNotifText = $countArticlesFromFollowedUsers;
 
-                                            <div class="card-body text-dark">
-                                                <a href="' . $likedArticle->getLink() . '">
-                                                    <p class="card-title"><strong><?php $likedArticle->getTitle() ?></strong></p>
-                                                </a>
-                                                <p class="card-text"></p>
-                                            </div>
+                                if ($countArticlesFromFollowedUsers > 4) {
+                                    $countNotifText = '...';
+                                }
+                                echo '<i class="fas fa-bell"></i>&nbsp&nbsp<span class="badge badge-light">' . $countNotifText . '</span>';
+                            }
+                            ?>
+                        </button>
+
+                        <div class="dropdown-menu" aria-labelledby="navDropArticlesFromFollowedUsers">
+                            <?php
+                            if ($countArticlesFromFollowedUsers) {
+                                $tabArticlesFromFollowedUsers = $user->getListArticlesFromFollowedUsers(2, 5);
+                                for ($i = 0; $i <= count($tabArticlesFromFollowedUsers) - 1; $i++) {
+                                    $articleFromUser = $tabArticlesFromFollowedUsers[$i];
+                                    echo '
+                                    <a href="' . $articleFromUser->getLink() . '" class="dropdown-item"><p class="card-title"><strong>' . $articleFromUser->getTitle() . '</strong></p>
+                                        <div class="mt-3">
+                                        <img class="rounded-circle z-depth-0" width="25" src="' . $articleFromUser->getUser()->getProfilPictureLink() . '" alt="image_user"><small>
+                                        ' . $articleFromUser->getUser()->getPseudo(false, false).' | <i class="far fa-clock"></i>'.$articleFromUser->getFormatedDate().'</small>
+                                        
                                         </div>
                                     </a>
-                            <?php
+                                    ';
+
+                                    if ($i !== count($tabArticlesFromFollowedUsers) - 1) {
+                                        echo '<hr>';
+                                    }
+                                }
+                                if ($countArticlesFromFollowedUsers > 1) {
+                                    echo '<a href=\'\' data-backdrop="false" data-toggle="modal" data-target="#modalArticlesFromFollowed"><div class="mt-3 dropdown-item" >Tout voir...</div></a>';
                                 }
                             }
                             ?>
@@ -132,12 +143,12 @@ if (!isset($textSearch)) $textSearch = '';
         </div>
     </nav>
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Modal articles -->
+    <div class="modal fade" id="modalArticlesFromFollowed" tabindex="-1" role="dialog" aria-labelledby="modalArticlesFromFollowed" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Articles aimés</h5>
+                    <h5 class="modal-title">Articles récents de vos auteurs préférés</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -146,35 +157,21 @@ if (!isset($textSearch)) $textSearch = '';
                     <div class="container">
                         <div class="row">
                             <?php
-                            if (isset($user) && $user->isConnected()) {
-                                // On récupère les articles
-                                foreach ($tabLikes as $likedArticle) {
-                            ?>
-                                    <div class="card card_article col-5 offset-1 mb-3" style="height: 24rem">
-                                        <!-- Card content -->
-                                        <div class="card-header d-flex flex-row bg-transparent overflow-hidden">
-                                            <!-- Avatar -->
-                                            <img src="<?= $likedArticle->getUser()->getProfilPictureLink() ?>" class="rounded-circle mr-3" height="50px" width="50px" alt="avatar">
-                                            <!-- Content -->
-                                            <h5 class="card-title font-weight-bold mb-2"><?= $likedArticle->getTitle() ?></h5>
-                                        </div>
-                                        <!-- Card content -->
-                                        <div class="card-body overflow-hidden">
-                                            <!-- Text -->
-                                            <p id="card-text collapseContent" class="card-text"><?= $likedArticle->getShortDescript() ?></p>
-                                        </div>
-                                        <div class="card-footer bg-transparent">
-                                            <small class="text-muted">
-                                                <i class="far fa-user pr-2"></i><?= $likedArticle->getUser()->getPseudo(false, true) ?> |
-                                                <i class="far fa-clock pr-2"></i><?= $likedArticle->getFormatedDate() ?>
-                                            </small>
-                                        </div>
-                                        <div class="card-footer bg-transparent">
-                                            <a href="<?= $likedArticle->getLink() ?>" class="btn btn-warning btn-sm">Lire la suite...</a>
-                                        </div>
+                            $tabArticlesFromFollowedUsers = $user->getListArticlesFromFollowedUsers(2, 5);
+                            foreach ($tabArticlesFromFollowedUsers as $articleFromFollowed) {
+                                echo '
+                                <div class="card card_article col-6" style="max-width: 18rem;">
+                                    <div class="card-header bg-transparent">
+                                        <img class="rounded-circle z-depth-0" width="40" src="' . $articleFromFollowed->getUser()->getProfilPictureLink() . '" alt="image_user"><small>
+                                        ' . $articleFromFollowed->getUser()->getPseudo(false, false) . '</small>
                                     </div>
-                            <?php
-                                }
+                
+                                    <div class="card-body text-dark">
+                                        <a href="' . $articleFromFollowed->getLink() . '"><p class="card-title"><strong>' . $articleFromFollowed->getTitle() . '</strong></p></a>
+                                        <p class="card-text"></p>
+                                    </div>
+                                </div>
+                                ';
                             }
                             ?>
                         </div>
@@ -186,4 +183,5 @@ if (!isset($textSearch)) $textSearch = '';
             </div>
         </div>
     </div>
+
 </header>
